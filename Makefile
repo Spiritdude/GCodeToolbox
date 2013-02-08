@@ -1,7 +1,7 @@
 VERSION=0.002
 
 all::
-	@echo "make install test" 
+	@echo "make install tests clean" 
 
 install::
 	cp gctoolbox ~/bin/
@@ -11,6 +11,8 @@ tests::
 
 clean::
 	cd tests; make clean
+
+# --- developers only below
 
 dist::	clean
 	cd ..; tar cfz Backup/gcodetoolbox-${VERSION}.tar.gz GCodeToolbox/
@@ -23,5 +25,5 @@ github::	clean
 	git push -u origin master
 
 edit::
-	dee4 gctoolbox cube10mm.stl Makefile INSTALL README.md slic3r.howto
+	dee4 gctoolbox Makefile INSTALL README.md slic3r.howto
 		
