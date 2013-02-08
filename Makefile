@@ -1,4 +1,4 @@
-VERSION=0.001
+VERSION=0.002
 
 all::
 	@echo "make install test" 

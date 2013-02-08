@@ -1,5 +1,7 @@
 <h1>GCodeToolBox<h1>
 
+Version: 0.002
+
 GCodeToolBox (gctoolbox executable) is a command-line (perl) program to manipulate .gcode files
 as created by slicers from .stl files.
 
@@ -16,7 +18,9 @@ prints out some information about the actual gcode
 
 % gctoolbox slice cube10mm.stl
 
-creates cube10mm.gcode, default slicer is Slic3r
+% gctoolbox --slicer=slic3r --slicer.skirts=0 --slicer.skirt_distance=2 slice cube10mm.stl
+
+creates cube10mm.gcode, default slicer is "slic3r"
 
 % gctoolbox --slicer=anotherSlicer slice cube10mm.stl
 
@@ -48,6 +52,12 @@ are also available via command-line --printer<key>=<value> as well, for example:
 % gctoolbox --printer=myprinter.conf cat 10x cube10mm.gcode > 10cubes.gcode
 
 % gctoolbox --printerX=200 --printerY=180 --printerMargin=5 --objectSpacing=5 3x cube10mm.gcode > 3cubes.gcode
+
+<h3>Tests</h3>
+
+% make tests
+
+and it will do some tests in tests/ and tests/array/; best explore the files.
 
 <h3>Visualization</h3>
 

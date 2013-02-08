@@ -2,11 +2,12 @@
 
 # --- GCodeToolbox, written by Rene K. Mueller <spiritdude@gmail.com>
 #
-$VERSION = '0.001';
+$VERSION = '0.002';
 $APPNAME = 'GCodeToolbox';
 #
 # History:
-# 2013/02/08: start, info and concat works
+# 2013/02/09: 0.002: passing slicer arguments via --slicer.<key>=<value>
+# 2013/02/08: 0.001: start, info and concat works
 
 my(%value,%flag);
 my %pr;
@@ -24,6 +25,9 @@ foreach(@ARGV) {
       push(@f,$f) foreach(1..$multiply);
       $multiply = 1;
       next;
+   } else {
+      print "ERROR: don't know what to do with '$_'\n";
+      help();
    }
 }
 
@@ -52,7 +56,7 @@ if($value{printer}&&open(F,$value{printer})) {
    close(F);
 }
 
-help() if($#f<0);
+help() if($#f<0); # -- nothing to do
 process($cmd,@f);
 
 sub process {
@@ -64,9 +68,14 @@ sub process {
       concatObjects(@f);
    
    } elsif($cmd eq 'slice') {
-      foreach(@f) {
-         print "=== slicing: $_ (with $value{slicer})\n";
-         print `$value{slicer} $_`;
+      foreach my $f (@f) {
+         print "=== slicing: $f (with $value{slicer})\n";
+         my(@sargs);
+         foreach my $k (sort keys %value) {
+            push(@sargs,"--$1=".$value{"slicer.$1"}) if($k=~/^slicer\.(\S+)/);
+         }
+         print "execute $value{slicer} @sargs $f\n" if($verbose);
+         print `$value{slicer} @sargs $f`;
       }
       
    } elsif($cmd eq 'info') {
@@ -87,21 +96,27 @@ sub process {
          }
       }
    } else {
+      print STDERR "ERROR: unknown command '$cmd'\n";
       help();
    }
 }
 
 sub help {
-   print join("\n",
+   print STDERR join("\n",
       "$APPNAME $VERSION:",
-      "\t-h                this help",
-      "\t--help            this help",
+      "\t-h or --help      this help",
       "\t-v                increase verbosity", 
-      "\t--slicer=cmd      define slicer",
+      "\t--slicer=cmd      define slicer (default: $value{slicer})",
+      "\t--slicer.[arg]=x  define slicer arguments passed on slicer (e.g. --slicer.skirts=0)",
       "\t--printer=file    reference printer profile",
+      "\t--printerX=x      define build width (default: $value{printerX}) [mm]",
+      "\t--printerY=y      define build depth (default: $value{printerY}) [mm]",
+      "\t--printerZ=z      define build height (default: $value{printerZ}) [mm]",
+      "\t--printerMargin=m define margin to perimeter of platform (default: $value{printerMargin}) [mm]",
       "\tinfo [file1]...   provide info on gcode files (default)",
       "\tslice [file1]...  slice .stl files to .gcode",
       "\tcat [file1]...    concate multiple .gcode files (stdout)",
+      "\t--objectSpacing=x define distance between items when concating",
       ),"\n\n";
    exit 1;
 }
