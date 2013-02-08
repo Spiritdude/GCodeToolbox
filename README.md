@@ -1,6 +1,6 @@
 <h1>GCodeToolbox<h1>
 
-Version: 0.002 (ALPHA)
+<b>Version: 0.002 (ALPHA)</b>
 
 GCodeToolbox (gctoolbox executable) is a command-line (perl) program to manipulate .gcode files as created by slicers from .stl files.
 
