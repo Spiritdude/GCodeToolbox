@@ -1,0 +1,294 @@
+#!/usr/bin/perl
+
+# --- GCodeToolbox, written by Rene K. Mueller <spiritdude@gmail.com>
+#
+$VERSION = '0.001';
+$APPNAME = 'GCodeToolbox';
+#
+# History:
+# 2013/02/08: start, info and concat works
+
+my(%value,%flag);
+my %pr;
+
+my $cmd;
+my $multiply = 1;
+
+foreach(@ARGV) {
+   $value{$1} = $2, next if(/^\-\-([^\s=]+)=(\S+)/);
+   $flag{$1}++, next if(/^\-(\S+)/);
+   $cmd = $_, next unless($cmd);
+   $multiply = $1, next if(/^(\d+)x$/);
+   if(-e $_) {
+      my $f = $_;
+      push(@f,$f) foreach(1..$multiply);
+      $multiply = 1;
+      next;
+   }
+}
+
+my $verbose = $flag{v};
+$cmd = 'info' unless($cmd);
+
+$value{objectSpacing} = 3 unless(defined $value{objectSpacing});
+$value{slicer} = 'slic3r' unless(defined $value{slicer});
+
+$value{printerX} = 200;
+$value{printerY} = 200;
+$value{printerZ} = 200;
+$value{printerMargin} = 3;
+
+if($value{printer}&&open(F,$value{printer})) {
+   print STDERR "printer: $value{printer} profile\n";
+   while(<F>) {
+      chop;
+      next if(/^\s*#/);
+      if(/^\s*([^\s:=]+)\s*[:=]\s*(\S.+)\s*$/) {
+         my($k,$v) = ($1,$2);
+         $k =~ s/(.)/uc $1/e;
+         $value{"printer$k"} = $v;
+      } 
+   }
+   close(F);
+}
+
+help() if($#f<0);
+process($cmd,@f);
+
+sub process {
+   my($cmd,@f) = @_;
+
+   print "=== $cmd on @f\n" if($verbose);
+
+   if($cmd eq 'cat'||$cmd eq 'concat') {
+      concatObjects(@f);
+   
+   } elsif($cmd eq 'slice') {
+      foreach(@f) {
+         print "=== slicing: $_ (with $value{slicer})\n";
+         print `$value{slicer} $_`;
+      }
+      
+   } elsif($cmd eq 'info') {
+      foreach my $f (@f) {
+         my($i) = parseGCode($f);
+         print "=== $f:\n";
+         foreach my $k (sort keys %${i}) {
+            next if($k=~/\.unit$/);
+            #print sprintf("  %40s: $i->{$k}",$k);
+            print "\t$k: ";
+            if(ref $i->{$k} eq 'ARRAY') {
+               print "array: ",@{$i->{$k}}+1," entries";
+            } else {
+               print $i->{$k};
+               print " ".$i->{"$k.unit"} if($i->{"$k.unit"});
+            }
+            print "\n";
+         }
+      }
+   } else {
+      help();
+   }
+}
+
+sub help {
+   print join("\n",
+      "$APPNAME $VERSION:",
+      "\t-h                this help",
+      "\t--help            this help",
+      "\t-v                increase verbosity", 
+      "\t--slicer=cmd      define slicer",
+      "\t--printer=file    reference printer profile",
+      "\tinfo [file1]...   provide info on gcode files (default)",
+      "\tslice [file1]...  slice .stl files to .gcode",
+      "\tcat [file1]...    concate multiple .gcode files (stdout)",
+      ),"\n\n";
+   exit 1;
+}
+
+sub parseGCode {
+   my($f) = @_;
+   my %g;
+   my %h;
+   
+   $g{filename} = $f;
+   foreach my $a (qw(x y z)) {
+      foreach my $f (qw(Min Max Movement)) {
+         $g{$a.$f.'.unit'} = 'mm';
+      }
+   }
+   $g{'filamentLength.unit'} = 'mm';
+   $g{'filamentVolume.unit'} = 'mm3';
+
+   open(F,$f);
+   while(<F>) {
+      chop; my($l) = $_;
+
+      $g{codeLines}++;
+      print "$f: >>> $_\n" if($verbose);
+
+      $g{"commentInfo.$1"} = $2 if(/^\s*;\s+(\S+)\s*[=:]\s*(.+)\s*$/);    # -- slic3r gives some useful metadata in the comments
+      $g{comments}++, next if(/^\s*;/);
+
+      my(@d) = split(/\s+/,$l);        # -- we decompose the line
+      foreach(@d) {
+         print "\t\t'$_'\n" if($verbose>1);
+         if(/(M\d+)/) {
+            my $c = $1;
+            $g{"operations.$c.count"}++;
+            $h{object} = 2 if($c eq 'M107'&&$h{object}==1);
+            $h{field} = 'extruderTemperature' if($c eq 'M104');
+            
+         } elsif(/S([\d\.\-]+)/) {
+            my($v) = $1;
+            #$g{"operations.S$v.count"}++;
+            $g{$h{field}."Min"} = $v if(!defined $g{$h{field}."Min"}||$g{$h{field}."Min"}>$v);
+            $g{$h{field}."Max"} = $v if(!defined $g{$h{field}."Max"}||$g{$h{field}."Max"}<$v);
+            push(@{$g{$h{field}}},$v);
+            $h{"$h{field}Sum"} += $v; $h{"$h{field}Count"}++;
+            $g{"$h{field}Average"} = $h{"$h{field}Sum"}/$h{"$h{field}Count"};
+
+         } elsif(/(G\d+)/) {
+            my $c = $1;
+            $g{"operations.$c.count"}++;
+            $h{object} = 1 if($c eq 'G1');
+            #$h{object} = 1 if($c eq 'G92');
+            #$h{object} = 1 if($c eq 'G28'&&$h{object}==0);
+            $h{object} = 2 if($c eq 'G28'&&$h{object}==1);
+            
+         } elsif(/([XYZ])([\-\d\.]+)/) {
+            my($a,$v) = ($1,$2);
+            my($f) = 'movement'.$a;
+            $g{$f.'Min'} = $v if(!defined $g{$f.'Min'}||$g{$f.'Min'}>$v);
+            $g{$f.'Max'} = $v if(!defined $g{$f.'Max'}||$g{$f.'Max'}<$v);
+            $g{$f.'Total'} += abs($v-$h{$a.'Position'});
+            $g{$f.'Count'}++;
+            $h{$a.'Position'} = $v;
+            $h{object} = 1 if($a eq 'Z'&&$v==0);
+         
+         } elsif(/F([\-\d\.]+)/) {
+            my($v) = $1;
+            my($f) = 'feedrate';
+            $g{$f.'Min'} = $v if(!defined $g{$f.'Min'}||$g{$f.'Min'}>$v);
+            $g{$f.'Max'} = $v if(!defined $g{$f.'Max'}||$g{$f.'Max'}<$v);
+            
+         } elsif(/E([\-\d\.]+)/) {
+            my($v) = $1;
+
+            $g{filamentLength} += $v;
+            $g{filamentVolume} += ($v>0?1:-1)*sq($g{"commentInfo.filament_diameter"}/2)*3.14127*$v if($g{"commentInfo.filament_diameter"});
+            
+            if($v>0) {                       # -- actually printing out
+               foreach my $a (qw(X Y Z)) {   # -- we calculate the actual size of the object as printed
+                  my $f = "object".$a;
+                  my $v = $h{$a.'Position'};
+                  $g{$f.'Min'} = $v if(!defined $g{$f.'Min'}||$g{$f.'Min'}>$v);
+                  $g{$f.'Max'} = $v if(!defined $g{$f.'Max'}||$g{$f.'Max'}<$v);
+               }
+               $h{object} = 1;
+            }
+            
+         } elsif($_ eq ';') {
+            last;
+         }
+      }
+      if($h{object}==0) {
+         ;  # -- head
+      } elsif($h{object}==1) {
+         push(@{$g{codeObject}},$l);
+      } else {
+         ;  # -- tail
+      }
+      push(@{$g{codeRaw}},$l);
+   }
+   close(F);
+
+   $g{objectX} = $g{objectXMax} - $g{objectXMin};
+   $g{objectY} = $g{objectYMax} - $g{objectYMin};
+   $g{objectZ} = $g{objectZMax} - $g{objectZMin};
+
+   return \%g;
+}
+
+sub concatObjects {
+   my(@f) = @_;
+   my($xoff,$yoff,$ymax) = ( 0,0,0 );
+   my($n,$xdir);
+   
+   $xoff = $value{printerMargin};
+   $yoff = $value{printerMargin};
+   $xdir = 1;
+   
+   foreach my $f (@f) {
+      my($i) = parseGCode($f);
+      if($xdir<0) {
+         $xoff += $xdir*($i->{objectX}+$value{objectSpacing});
+      }
+      $n++;
+      if($xdir>0) {
+         if($xoff+$i->{objectX}+$value{printerMargin}>=$value{printerX}) {  
+            $xoff = $value{printerX}-($value{printerMargin}+$i->{objectX});
+            $yoff = $ymax+$value{objectSpacing};
+            $xdir *= -1;
+            #print STDERR "wrapping\n";
+         }
+      } else {
+         if($xoff<=0) {  
+            $xoff = $value{printerMargin};
+            $yoff = $ymax+$value{objectSpacing};
+            $xdir *= -1;
+            #print STDERR "wrapping\n";
+         }
+      }
+      if($yoff+$i->{objectY}+$value{printerMargin}>=$value{printerY}) {
+         print STDERR "ERROR: object #$n, $f doesn't fit on plate anymore ($value{printerX}x$value{printerY}), disregarded\n";
+         next;
+      }
+
+      print STDERR "#$n: place $f $i->{objectX}x$i->{objectY}+$xoff+$yoff (",($xdir>0?'left-to-right':'right-to-left'),")\n";
+      
+      reoriginObject($i,$xoff,$yoff,'keep');
+      printObject($i);
+      
+      $ymax = $yoff+$i->{objectY} if($ymax<$yoff+$i->{objectY});
+      if($xdir>0) { 
+         $xoff += $xdir*($i->{objectX}+$value{objectSpacing});
+      }
+   }
+}
+      
+sub reoriginObject {
+   my($i,$x,$y,$z) = @_;
+   my(@n);
+   foreach(@{$i->{codeObject}}) {
+      my(@d) = split(/\s+/);
+      my(@dn);
+      foreach(@d) {
+         if(/([XYZ])([\d\.]+)/) {
+            my($a,$v) = ($1,$2);
+            my($fmin) = "object".$a."Min";
+            my($fmax) = "object".$a."Max";
+            $v = $v-$i->{$fmin};
+            if($x ne 'keep') { $v += $x if($a eq 'X'); }
+            if($y ne 'keep') { $v += $y if($a eq 'Y'); }
+            if($z ne 'keep') { $v += $z if($a eq 'Z'); }
+            push(@dn,$a.$v);
+         } else {
+            push(@dn,$_);
+         }
+      }
+      push(@n,join(" ",@dn));
+   }
+   @{$i->{codeObject}} = @n;
+}
+
+sub printObject {
+   my($i) = @_;
+   foreach(@{$i->{codeObject}}) {
+      print "$_\n";
+   }
+}
+
+sub sq {
+   return $_[0]*$_[0];
+}
