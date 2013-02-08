@@ -1,6 +1,6 @@
 <h1>GCodeToolBox<h1>
 
-GCodeToolBox (gctoolbox exectuable) is a command-line (perl) program to manipulate .gcode files
+GCodeToolBox (gctoolbox executable) is a command-line (perl) program to manipulate .gcode files
 as created by slicers from .stl files.
 
 <h2>Examples</h2>
