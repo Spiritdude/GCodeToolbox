@@ -26,7 +26,7 @@ prints out some information about the actual gcode
 </pre>
 creates cube10mm.gcode, default slicer is "slic3r"
 <pre>
-% gctoolbox --slicer=skinforge slice cube10mm.stl
+% gctoolbox --slicer=skeinforge slice cube10mm.stl
 </pre>
 use another slicer backend, it has to create .gcode
 
@@ -65,7 +65,9 @@ are also available via command-line --printer<key>=<value> as well (key start wi
 
 <h3>Tests</h3>
 
+<pre>
 % make tests
+</pre>
 
 and it will do some tests in tests/ and tests/array/; best explore the files.
 
