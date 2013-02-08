@@ -12,7 +12,6 @@ $APPNAME = 'GCodeToolbox';
 # 2013/02/08: 0.001: start, info and concat works
 
 my(%value,%flag);
-my %pr;
 
 my $cmd;
 my $multiply = 1;
@@ -115,10 +114,10 @@ sub help {
       "\t--printerY=y      define build depth (default: $value{printerY}) [mm]",
       "\t--printerZ=z      define build height (default: $value{printerZ}) [mm]",
       "\t--printerMargin=m define margin to perimeter of platform (default: $value{printerMargin}) [mm]",
+      "\t--objectSpacing=x define distance between items when concating (default: $value{objectSpacing}) [mm]",
       "\tinfo [file1]...   provide info on gcode files (default)",
       "\tslice [file1]...  slice .stl files to .gcode",
       "\tcat [file1]...    concate multiple .gcode files (stdout)",
-      "\t--objectSpacing=x define distance between items when concating",
       ),"\n\n";
    exit 1;
 }
