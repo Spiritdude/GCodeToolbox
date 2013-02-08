@@ -1,8 +1,8 @@
-<h1>GCodeToolBox<h1>
+<h1>GCodeToolbox<h1>
 
 Version: 0.002
 
-GCodeToolBox (gctoolbox executable) is a command-line (perl) program to manipulate .gcode files
+GCodeToolbox (gctoolbox executable) is a command-line (perl) program to manipulate .gcode files
 as created by slicers from .stl files.
 
 <h2>Examples</h2>
@@ -43,10 +43,10 @@ which concates 10x cube10mm's and 3x inchaxis's
 
 You can define a profile of your printer (default X=200, Y=200, Z=200 and margin=3), with e.g. "myprinter.conf":
 <pre>
-   X: 150
-   Y: 180
-   Z: 120
-   margin: 3
+X: 150
+Y: 180
+Z: 120
+margin: 3
 </pre>
    
 defines the build-volume, margin of the built-platform toward the pieces, all variables of .conf file 
