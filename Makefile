@@ -4,7 +4,8 @@ all::
 	@echo "make install tests clean" 
 
 install::
-	cp gctoolbox ~/bin/
+	#cp gctoolbox ~/bin/
+	sudo cp gctoolbox /usr/local/bin/
 
 tests::	
 	cd tests; make
