@@ -9,34 +9,39 @@ as created by slicers from .stl files.
 
 <h3>Information of GCODE</h3>
 
+<pre>
 % gctoolbox cube10mm.gcode
 
 % gctoolbox info cube10mm.gcode
+</pre>
 
 prints out some information about the actual gcode
 
 <h3>Slicing STL to GCODE</h3>
 
+<pre>
 % gctoolbox slice cube10mm.stl
 
 % gctoolbox --slicer=slic3r --slicer.skirt_distance=2 slice cube10mm.stl
-
+</pre>
 creates cube10mm.gcode, default slicer is "slic3r"
-
-% gctoolbox --slicer=anotherSlicer slice cube10mm.stl
-
+<pre>
+% gctoolbox --slicer=skinforge slice cube10mm.stl
+</pre>
 use another slicer backend, it has to create .gcode
 
 <h3>Concate</h3>
 
+<pre>
 % gctoolbox cat cube10mm.gcode inchaxis.gcode > mixed.gcode
-
+</pre>
 concat several gcode files into one gcode.
 
 You can also define a multiplication:
 
+<pre>
 % gctoolbox cat 10x cube10mm.gcode 3x inchaxis.gcode > mixed2.gcode
-
+</pre>
 which concates 10x cube10mm's and 3x inchaxis's
 
 <h3>Printer Definition</h3>
@@ -50,11 +55,13 @@ margin: 3
 </pre>
    
 defines the build-volume, margin of the built-platform toward the pieces, all variables of .conf file 
-are also available via command-line --printer<key>=<value> as well, for example:
+are also available via command-line --printer<key>=<value> as well (key start with uppercase letter), for example:
 
+<pre>
 % gctoolbox --printer=myprinter.conf cat 10x cube10mm.gcode > 10cubes.gcode
 
 % gctoolbox --printerX=200 --printerY=180 --printerMargin=5 --objectSpacing=5 3x cube10mm.gcode > 3cubes.gcode
+</pre>
 
 <h3>Tests</h3>
 
@@ -64,11 +71,10 @@ and it will do some tests in tests/ and tests/array/; best explore the files.
 
 <h3>Visualization</h3>
 
-Best visit http://www.buildlog.net/gview/ and simply drag&drop your .gcode file to the browser-window,
-and it will preview the gcode.
+Best visit http://www.buildlog.net/gview/ and simply drag&drop your .gcode file to the browser-window, and it will preview the gcode.
 
 
 That's all for now,
 
-Rene K. Mueller
+Rene K. Mueller<br>
 2013/02/08

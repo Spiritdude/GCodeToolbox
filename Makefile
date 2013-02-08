@@ -7,6 +7,9 @@ install::
 	#cp gctoolbox ~/bin/
 	sudo cp gctoolbox /usr/local/bin/
 
+deinstall::
+	sudo rm -f /usr/local/bin/gctoolbox
+
 tests::	
 	cd tests; make
 
