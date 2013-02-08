@@ -2,6 +2,8 @@
 
 # --- GCodeToolbox, written by Rene K. Mueller <spiritdude@gmail.com>
 #
+# License: GPLv2
+#
 $VERSION = '0.002';
 $APPNAME = 'GCodeToolbox';
 #
