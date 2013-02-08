@@ -10,6 +10,7 @@ as created by slicers from .stl files.
 <h3>Information of GCODE</h3>
 
 % gctoolbox cube10mm.gcode
+
 % gctoolbox info cube10mm.gcode
 
 prints out some information about the actual gcode
@@ -18,7 +19,7 @@ prints out some information about the actual gcode
 
 % gctoolbox slice cube10mm.stl
 
-% gctoolbox --slicer=slic3r --slicer.skirts=0 --slicer.skirt_distance=2 slice cube10mm.stl
+% gctoolbox --slicer=slic3r --slicer.skirt_distance=2 slice cube10mm.stl
 
 creates cube10mm.gcode, default slicer is "slic3r"
 
@@ -41,10 +42,12 @@ which concates 10x cube10mm's and 3x inchaxis's
 <h3>Printer Definition</h3>
 
 You can define a profile of your printer (default X=200, Y=200, Z=200 and margin=3), with e.g. "myprinter.conf":
+<pre>
    X: 150
    Y: 180
    Z: 120
    margin: 3
+</pre>
    
 defines the build-volume, margin of the built-platform toward the pieces, all variables of .conf file 
 are also available via command-line --printer<key>=<value> as well, for example:

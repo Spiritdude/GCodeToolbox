@@ -15,10 +15,10 @@ clean::
 dist::	clean
 	cd ..; tar cfz Backup/gcodetoolbox-${VERSION}.tar.gz GCodeToolbox/
 
-backup::
+backup::	clean
 	scp ../Backup/gcodetoolbox-${VERSION}.tar.gz the-labs.com:Backup/
 
-github::
+github::	clean
 	git remote set-url origin git@github.com:Spiritdude/GCodeToolbox.git
 	git push -u origin master
 
