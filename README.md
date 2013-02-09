@@ -39,13 +39,13 @@ GCodeToolbox 0.006:
         --printerY=y      define build depth (default: 200) [mm]
         --printerZ=z      define build height (default: 200) [mm]
         --printerMargin=m define margin to perimeter of platform (default: 3) [mm]
-        --cols=c          define columns when concating (default none, auto-overflow)
-        --objectSpacing=x define distance between items when concating (default: 3) [mm]
+        --cols=c          define columns when concat (default none, auto-overflow)
+        --objectSpacing=x define distance between items when concat (default: 3) [mm]
         --fanSpeed=s      define fan-speed (s=0-255) (default none, defined in gcode)
         --temperature=t   define extruder temperature (default none, defined in gcode)
         info [file1]...   provide info on gcode files (default)
         slice [file1]...  slice .stl files to .gcode
-        cat [file1]...    concate multiple .gcode files (stdout)
+        cat [file1]...    concat multiple .gcode files to stdout
 </pre>
 
 <h2>Examples</h2>
