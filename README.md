@@ -59,8 +59,7 @@ Z: 120
 margin: 3
 </pre>
    
-defines the build-volume, margin of the built-platform toward the pieces, all variables of .conf file 
-are also available via command-line --printer<key>=<value> as well (key start with uppercase letter), for example:
+defines the build-volume, margin of the built-platform toward the pieces, all variables of .conf file are also available via command-line --printer[key]=[value] as well ([key] starts with uppercase letter), for example:
 
 <pre>
 % gctoolbox --printer=myprinter.conf cat 10x cube10mm.gcode > 10cubes.gcode

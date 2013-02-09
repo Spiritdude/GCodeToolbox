@@ -29,5 +29,5 @@ github::	clean
 	git push -u origin master
 
 edit::
-	dee4 gctoolbox Makefile INSTALL README.md slic3r.howto
+	dee4 gctoolbox Makefile tests/Makefile tests/array/Makefile tests/array/makePLATest INSTALL README.md slic3r.howto
 		
