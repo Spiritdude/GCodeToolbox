@@ -104,4 +104,4 @@ Best visit http://www.buildlog.net/gview/ and simply drag&drop your .gcode file 
 That's all for now,
 
 Rene K. Mueller<br>
-2013/02/08
+initial 2013/02/08, update 2013/02/09
