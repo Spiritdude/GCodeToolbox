@@ -1,6 +1,6 @@
 <h1>GCodeToolbox<h1>
 
-<b>Version: 0.002 (ALPHA)</b>
+<b>Version: 0.003 (ALPHA)</b>
 
 GCodeToolbox (gctoolbox executable) is a command-line (perl) program to manipulate .gcode files (for 3D printers & RepRaps) as created by slicers (like Slic3r) from .stl files. 
 
