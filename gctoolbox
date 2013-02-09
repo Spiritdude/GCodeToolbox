@@ -4,7 +4,7 @@
 #
 # License: GPLv2
 #
-$VERSION = '0.003';
+$VERSION = '0.004';
 $APPNAME = 'GCodeToolbox';
 #
 # History:
@@ -35,11 +35,10 @@ foreach(@ARGV) {
 }
 
 my $verbose = $arg{v};
-$cmd = 'info' unless($cmd);
 
 $arg{objectSpacing} = 3 unless(defined $arg{objectSpacing});
 $arg{slicer} = 'slic3r' unless(defined $arg{slicer});
-$arg{swinging} = 'on' unless(defined $arg{swinging});
+#$arg{swinging} = 'on' unless(defined $arg{swinging});
 
 $arg{printerX} = 200;
 $arg{printerY} = 200;
@@ -76,7 +75,7 @@ sub process {
          print "=== slicing: $f (with $arg{slicer})\n";
          my(@sargs);
          foreach my $k (sort keys %arg) {
-            push(@sargs,"--$1=".$arg{"slicer.$1"}) if($k=~/^slicer\.(\S+)/);
+            push(@sargs,"--$1=".$arg{$k}) if($k=~/^slicer\.(\S+)/);
          }
          print "execute $arg{slicer} @sargs $f\n" if($verbose);
          print `$arg{slicer} @sargs $f`;
@@ -256,6 +255,8 @@ sub concatObjects {
             }
             $yoff = $ymax+$arg{objectSpacing};
             #print STDERR "wrapping\n";
+            print "G1 Y$yoff\n";    # -- let's make sure we don't run into already printed objects
+            print "G1 X$yoff\n";
          }
       } else {
          if($xoff<=0) {  
@@ -263,6 +264,8 @@ sub concatObjects {
             $yoff = $ymax+$arg{objectSpacing};
             $xdir *= -1;
             #print STDERR "wrapping\n";
+            print "G1 Y$yoff\n";    # -- let's make sure we don't run into already printed objects
+            print "G1 X$yoff\n";
          }
       }
       if($yoff+$i->{objectY}+$arg{printerMargin}>=$arg{printerY}) {

@@ -22,7 +22,6 @@ which copies the <tt>gctoolbox</tt> to /usr/local/bin/ - that's all.
 <h3>Information of GCODE</h3>
 
 <pre>
-% gctoolbox cube10mm.gcode
 % gctoolbox info cube10mm.gcode
 </pre>
 
