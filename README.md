@@ -49,14 +49,14 @@ creates cube10mm.gcode, default slicer is Slic3r, and arguments for the slicer c
 </pre>
 use another slicer backend, it has to create .gcode
 
-<h3>Concatinate</h3>
+<h3>Concatenate</h3>
 
 Concatenating (short 'cat', like the UNIX command 'cat') is the main feature of GCodeToolbox.
 
 <pre>
 % gctoolbox cat cube10mm.gcode inchaxis.gcode > mixed.gcode
 </pre>
-concatinate several gcode files into one gcode.
+concatenate several gcode files into one gcode.
 
 <a href="tests/sshot-6.png"><img src="tests/sshot-6-300px.png"></a>
 
