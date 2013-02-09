@@ -27,6 +27,27 @@ The main aim of this package is to be able to
 
 which copies the <tt>gctoolbox</tt> to /usr/local/bin/ - that's all.
 
+<h2>Usage</h2>
+<pre>
+GCodeToolbox 0.006:
+        -h or --help      this help
+        -v                increase verbosity
+        --slicer=cmd      define slicer (default: slic3r)
+        --slicer.[arg]=x  define slicer arguments passed on slicer (e.g. --slicer.skirts=0)
+        --printer=file    reference printer profile
+        --printerX=x      define build width (default: 200) [mm]
+        --printerY=y      define build depth (default: 200) [mm]
+        --printerZ=z      define build height (default: 200) [mm]
+        --printerMargin=m define margin to perimeter of platform (default: 3) [mm]
+        --cols=c          define columns when concating (default none, auto-overflow)
+        --objectSpacing=x define distance between items when concating (default: 3) [mm]
+        --fanSpeed=s      define fan-speed (s=0-255) (default none, defined in gcode)
+        --temperature=t   define extruder temperature (default none, defined in gcode)
+        info [file1]...   provide info on gcode files (default)
+        slice [file1]...  slice .stl files to .gcode
+        cat [file1]...    concate multiple .gcode files (stdout)
+</pre>
+
 <h2>Examples</h2>
 
 <h3>Information of GCODE</h3>
