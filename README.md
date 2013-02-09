@@ -7,7 +7,7 @@ GCodeToolbox (<tt>gctoolbox</tt>) is a command-line perl-script to manipulate .g
 The main aim of this package is to be able to 
 <ol>
 <li>create various pieces (.gcode) with different settings (infill, infill-methods, extrude temperature etc) and 
-<li><b>then</b> concate them for <b>one print</b> (yet untested).
+<li><b>then</b> concatinate (cat) them for <b>one print</b> (yet untested).
 </ol>
 
 <h2>History</h2>
@@ -49,20 +49,23 @@ creates cube10mm.gcode, default slicer is Slic3r, and arguments for the slicer c
 </pre>
 use another slicer backend, it has to create .gcode
 
-<h3>Concate</h3>
+<h3>Concatinate</h3>
 
-<a href="tests/sshot-6.png"><img src="tests/sshot-6-300px.png"></a>
+Concatenating (short 'cat', like the UNIX command 'cat') is the main feature of GCodeToolbox.
+
 <pre>
 % gctoolbox cat cube10mm.gcode inchaxis.gcode > mixed.gcode
 </pre>
-concat several gcode files into one gcode.
+concatinate several gcode files into one gcode.
+
+<a href="tests/sshot-6.png"><img src="tests/sshot-6-300px.png"></a>
 
 You can also define a multiplication:
 
 <pre>
 % gctoolbox cat 10x cube10mm.gcode 3x inchaxis.gcode > mixed2.gcode
 </pre>
-which concates 10 times cube10mm's and 3 times inchaxis's.
+which concatinates 10 times cube10mm's and 3 times inchaxis's.
 
 By default pieces are arranged left-to-right and when it overflows they are a placed further on the platform, but you can force wrapping:
 <pre>
