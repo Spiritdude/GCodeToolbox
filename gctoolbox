@@ -128,7 +128,7 @@ sub help {
       "\t--temperature=t   define extruder temperature (default none, defined in gcode)", 
       "\tinfo [file1]...   provide info on gcode files",
       "\tslice [file1]...  slice .stl files to .gcode",
-      "\tcat [file1]...    concat multiple .gcode files (stdout)",
+      "\tcat [file1]...    concat multiple .gcode files to stdout",
       ),"\n\n";
    exit 1;
 }

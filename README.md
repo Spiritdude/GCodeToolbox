@@ -45,7 +45,7 @@ GCodeToolbox 0.006:
         --temperature=t   define extruder temperature (default none, defined in gcode)
         info [file1]...   provide info on gcode files
         slice [file1]...  slice .stl files to .gcode
-        cat [file1]...    concat multiple .gcode files (stdout)
+        cat [file1]...    concat multiple .gcode files to stdout
 </pre>
 
 <h2>Examples</h2>
