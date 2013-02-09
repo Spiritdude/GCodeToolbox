@@ -15,7 +15,7 @@ The main aim of this package is to be able to
 <li> 2013/02/09: 0.005: proper header and trailer if objects are concated
 <li> 2013/02/09: 0.004: proper movement at wrapping at concating (inserting G1 moves)
 <li> 2013/02/09: 0.003: optional left-to-right to right-to-left swinging
-<li> 2013/02/09: 0.002: passing slicer arguments via --slicer.<key>=<value>
+<li> 2013/02/09: 0.002: passing slicer arguments via --slicer.[key]=[value]
 <li> 2013/02/08: 0.001: start, info and concat works
 </ul>
 
