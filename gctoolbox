@@ -8,7 +8,7 @@ $VERSION = '0.006';
 $APPNAME = 'GCodeToolbox';
 #
 # History:
-# 2013/02/09: 0.006: fanSpeed and temperature arguments possible, override gcode, proper filter of object setttings
+# 2013/02/09: 0.006: fanSpeed and temperature arguments possible, override gcode, proper filtering of object settings
 # 2013/02/09: 0.005: proper header and trailer if objects are concated
 # 2013/02/09: 0.004: proper movement at wrapping at concating (inserting G1 moves)
 # 2013/02/09: 0.003: optional left-to-right to right-to-left swinging

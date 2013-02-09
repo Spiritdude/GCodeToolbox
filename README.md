@@ -12,7 +12,7 @@ The main aim of this package is to be able to
 
 <h2>History</h2>
 <ul>
-<li> 2013/02/09: 0.006: fanSpeed and temperature arguments possible, override gcode, proper filter of object setttings
+<li> 2013/02/09: 0.006: fanSpeed and temperature arguments possible, override gcode, proper filtering of object settings
 <li> 2013/02/09: 0.005: proper header and trailer if objects are concated
 <li> 2013/02/09: 0.004: proper movement at wrapping at concating (inserting G1 moves)
 <li> 2013/02/09: 0.003: optional left-to-right to right-to-left swinging
