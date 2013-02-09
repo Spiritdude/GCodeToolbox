@@ -51,7 +51,7 @@ use another slicer backend, it has to create .gcode
 
 <h3>Concate</h3>
 
-<img src="tests/sshot-6.png" style="float: right; margin-left: 2em">
+<img src="tests/sshot-6.png" style="width: 300px; float: right; margin-left: 2em">
 <pre>
 % gctoolbox cat cube10mm.gcode inchaxis.gcode > mixed.gcode
 </pre>
