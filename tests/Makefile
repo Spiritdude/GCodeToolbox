@@ -1,5 +1,5 @@
 
-all::	cube10mm.gcode 21cubes.gcode 21cubes2.gcode inchaxis.gcode mixed.gcode 
+all::	cube10mm.gcode 21cubes.gcode 21cubes2.gcode 9cubes3x3.gcode inchaxis.gcode mixed.gcode 
 	cd array; make 
 
 cube10mm.gcode:   cube10mm.stl
@@ -7,6 +7,9 @@ cube10mm.gcode:   cube10mm.stl
 
 inchaxis.gcode:	inchaxis.stl
 	../gctoolbox slice inchaxis.stl
+
+9cubes3x3.gcode::	cube10mm.gcode
+	../gctoolbox --cols=3 cat 9x cube10mm.gcode > 9cubes3x3.gcode
 
 21cubes.gcode::	cube10mm.gcode
 	../gctoolbox cat 21x cube10mm.gcode > 21cubes.gcode

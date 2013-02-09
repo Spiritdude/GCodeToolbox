@@ -51,6 +51,7 @@ use another slicer backend, it has to create .gcode
 
 <h3>Concate</h3>
 
+<img src="tests/sshot-6.png" style="float: right; margin-left: 2em">
 <pre>
 % gctoolbox cat cube10mm.gcode inchaxis.gcode > mixed.gcode
 </pre>
@@ -62,6 +63,13 @@ You can also define a multiplication:
 % gctoolbox cat 10x cube10mm.gcode 3x inchaxis.gcode > mixed2.gcode
 </pre>
 which concates 10 times cube10mm's and 3 times inchaxis's.
+
+By default pieces are arranged left-to-right and when it overflows they are a placed further on the platform, but you can force wrapping:
+<pre>
+% gctoolbox --cols=5 cat 25x cube10mm.gcode > 25cubes5x5.gcode
+</pre>
+
+which is ideal when a grid of test objects with different settings are made (e.g. per row one temperature, per column certain settings like infill density).
 
 <h3>Printer Definition</h3>
 
