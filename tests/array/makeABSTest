@@ -15,8 +15,9 @@ for(my $t=225; $t<=250; $t+=5) {          # 250-225=25/5+1 = 6 steps
       $if = sprintf("%03d",$if);
       my($if_) = $if/100;
       my($f) = "abs-cube-$t-$if.gcode";
-      print "slicing to $f\n";
-      `../../gctoolbox --slicer.skirt-distance=4 --slicer.fill-density=$if_ --slicer.temperature=$t --slicer.o=$f slice ../cube10mm.stl`
-         unless(-f $f);
+      unless(-f $f) {
+         print "slicing to $f\n";
+         `../../gctoolbox --slicer.skirt-distance=4 --slicer.fill-density=$if_ --slicer.temperature=$t --slicer.o=$f slice ../cube10mm.stl`;
+      }
    }
 }

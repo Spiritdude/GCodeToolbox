@@ -4,21 +4,23 @@
 #
 # License: GPLv2
 #
-$VERSION = '0.002';
+$VERSION = '0.003';
 $APPNAME = 'GCodeToolbox';
 #
 # History:
 # 2013/02/09: 0.002: passing slicer arguments via --slicer.<key>=<value>
 # 2013/02/08: 0.001: start, info and concat works
 
-my(%value,%flag);
+use Math::Trig;
+
+my(%arg);
 
 my $cmd;
 my $multiply = 1;
 
 foreach(@ARGV) {
-   $value{$1} = $2, next if(/^\-\-([^\s=]+)=(\S+)/);
-   $flag{$1}++, next if(/^\-(\S+)/);
+   $arg{$1} = $2, next if(/^\-\-([^\s=]+)=(\S+)/);
+   $arg{$1}++, next if(/^\-\-([^\s=]+)/||/^\-(\S+)/);
    $cmd = $_, next unless($cmd);
    $multiply = $1, next if(/^(\d+)x$/);
    if(-e $_) {
@@ -32,26 +34,27 @@ foreach(@ARGV) {
    }
 }
 
-my $verbose = $flag{v};
+my $verbose = $arg{v};
 $cmd = 'info' unless($cmd);
 
-$value{objectSpacing} = 3 unless(defined $value{objectSpacing});
-$value{slicer} = 'slic3r' unless(defined $value{slicer});
+$arg{objectSpacing} = 3 unless(defined $arg{objectSpacing});
+$arg{slicer} = 'slic3r' unless(defined $arg{slicer});
+$arg{swinging} = 'on' unless(defined $arg{swinging});
 
-$value{printerX} = 200;
-$value{printerY} = 200;
-$value{printerZ} = 200;
-$value{printerMargin} = 3;
+$arg{printerX} = 200;
+$arg{printerY} = 200;
+$arg{printerZ} = 200;
+$arg{printerMargin} = 3;
 
-if($value{printer}&&open(F,$value{printer})) {
-   print STDERR "printer: $value{printer} profile\n";
+if($arg{printer}&&open(F,$arg{printer})) {
+   print STDERR "printer: $arg{printer} profile\n";
    while(<F>) {
       chop;
       next if(/^\s*#/);
       if(/^\s*([^\s:=]+)\s*[:=]\s*(\S.+)\s*$/) {
          my($k,$v) = ($1,$2);
          $k =~ s/(.)/uc $1/e;
-         $value{"printer$k"} = $v;
+         $arg{"printer$k"} = $v;
       } 
    }
    close(F);
@@ -70,13 +73,13 @@ sub process {
    
    } elsif($cmd eq 'slice') {
       foreach my $f (@f) {
-         print "=== slicing: $f (with $value{slicer})\n";
+         print "=== slicing: $f (with $arg{slicer})\n";
          my(@sargs);
-         foreach my $k (sort keys %value) {
-            push(@sargs,"--$1=".$value{"slicer.$1"}) if($k=~/^slicer\.(\S+)/);
+         foreach my $k (sort keys %arg) {
+            push(@sargs,"--$1=".$arg{"slicer.$1"}) if($k=~/^slicer\.(\S+)/);
          }
-         print "execute $value{slicer} @sargs $f\n" if($verbose);
-         print `$value{slicer} @sargs $f`;
+         print "execute $arg{slicer} @sargs $f\n" if($verbose);
+         print `$arg{slicer} @sargs $f`;
       }
       
    } elsif($cmd eq 'info') {
@@ -107,14 +110,16 @@ sub help {
       "$APPNAME $VERSION:",
       "\t-h or --help      this help",
       "\t-v                increase verbosity", 
-      "\t--slicer=cmd      define slicer (default: $value{slicer})",
+      "\t--slicer=cmd      define slicer (default: $arg{slicer})",
       "\t--slicer.[arg]=x  define slicer arguments passed on slicer (e.g. --slicer.skirts=0)",
       "\t--printer=file    reference printer profile",
-      "\t--printerX=x      define build width (default: $value{printerX}) [mm]",
-      "\t--printerY=y      define build depth (default: $value{printerY}) [mm]",
-      "\t--printerZ=z      define build height (default: $value{printerZ}) [mm]",
-      "\t--printerMargin=m define margin to perimeter of platform (default: $value{printerMargin}) [mm]",
-      "\t--objectSpacing=x define distance between items when concating (default: $value{objectSpacing}) [mm]",
+      "\t--printerX=x      define build width (default: $arg{printerX}) [mm]",
+      "\t--printerY=y      define build depth (default: $arg{printerY}) [mm]",
+      "\t--printerZ=z      define build height (default: $arg{printerZ}) [mm]",
+      "\t--printerMargin=m define margin to perimeter of platform (default: $arg{printerMargin}) [mm]",
+      #"\t--cols=c          define columns when concating (default: $arg{cols}) [mm]",
+      #"\t--swinging        enable swinging left-to-right to right-to-left when concating (default: $arg{swinging})",
+      "\t--objectSpacing=x define distance between items when concating (default: $arg{objectSpacing}) [mm]",
       "\tinfo [file1]...   provide info on gcode files (default)",
       "\tslice [file1]...  slice .stl files to .gcode",
       "\tcat [file1]...    concate multiple .gcode files (stdout)",
@@ -192,7 +197,7 @@ sub parseGCode {
             my($v) = $1;
 
             $g{filamentLength} += $v;
-            $g{filamentVolume} += ($v>0?1:-1)*sq($g{"commentInfo.filament_diameter"}/2)*3.14127*$v if($g{"commentInfo.filament_diameter"});
+            $g{filamentVolume} += ($v>0?1:-1)*sq($g{"commentInfo.filament_diameter"}/2)*pi*$v if($g{"commentInfo.filament_diameter"});
             
             if($v>0) {                       # -- actually printing out
                foreach my $a (qw(X Y Z)) {   # -- we calculate the actual size of the object as printed
@@ -231,33 +236,37 @@ sub concatObjects {
    my($xoff,$yoff,$ymax) = ( 0,0,0 );
    my($n,$xdir);
    
-   $xoff = $value{printerMargin};
-   $yoff = $value{printerMargin};
+   $xoff = $arg{printerMargin};
+   $yoff = $arg{printerMargin};
    $xdir = 1;
    
    foreach my $f (@f) {
       my($i) = parseGCode($f);
       if($xdir<0) {
-         $xoff += $xdir*($i->{objectX}+$value{objectSpacing});
+         $xoff += $xdir*($i->{objectX}+$arg{objectSpacing});
       }
       $n++;
       if($xdir>0) {
-         if($xoff+$i->{objectX}+$value{printerMargin}>=$value{printerX}) {  
-            $xoff = $value{printerX}-($value{printerMargin}+$i->{objectX});
-            $yoff = $ymax+$value{objectSpacing};
-            $xdir *= -1;
+         if($xoff+$i->{objectX}+$arg{printerMargin}>=$arg{printerX}) {  
+            if($arg{swinging}) {     # --- swinging left-to-right and right-to-left
+               $xoff = $arg{printerX}-($arg{printerMargin}+$i->{objectX});
+               $xdir *= -1;
+            } else {
+               $xoff = $arg{printerMargin};
+            }
+            $yoff = $ymax+$arg{objectSpacing};
             #print STDERR "wrapping\n";
          }
       } else {
          if($xoff<=0) {  
-            $xoff = $value{printerMargin};
-            $yoff = $ymax+$value{objectSpacing};
+            $xoff = $arg{printerMargin};
+            $yoff = $ymax+$arg{objectSpacing};
             $xdir *= -1;
             #print STDERR "wrapping\n";
          }
       }
-      if($yoff+$i->{objectY}+$value{printerMargin}>=$value{printerY}) {
-         print STDERR "ERROR: object #$n, $f doesn't fit on plate anymore ($value{printerX}x$value{printerY}), disregarded\n";
+      if($yoff+$i->{objectY}+$arg{printerMargin}>=$arg{printerY}) {
+         print STDERR "ERROR: object #$n, $f doesn't fit on plate anymore ($arg{printerX}x$arg{printerY}), disregarded\n";
          next;
       }
 
@@ -268,7 +277,7 @@ sub concatObjects {
       
       $ymax = $yoff+$i->{objectY} if($ymax<$yoff+$i->{objectY});
       if($xdir>0) { 
-         $xoff += $xdir*($i->{objectX}+$value{objectSpacing});
+         $xoff += $xdir*($i->{objectX}+$arg{objectSpacing});
       }
    }
 }
