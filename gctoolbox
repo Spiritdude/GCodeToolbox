@@ -4,10 +4,11 @@
 #
 # License: GPLv2
 #
-$VERSION = '0.005';
+$VERSION = '0.006';
 $APPNAME = 'GCodeToolbox';
 #
 # History:
+# 2013/02/09: 0.006: fanSpeed and temperature arguments possible, override gcode, proper filter of object setttings
 # 2013/02/09: 0.005: proper header and trailer if objects are concated
 # 2013/02/09: 0.004: proper movement at wrapping at concating (inserting G1 moves)
 # 2013/02/09: 0.003: optional left-to-right to right-to-left swinging
@@ -21,6 +22,16 @@ my(%arg);
 
 my $cmd;
 my $multiply = 1;
+
+# -- defaults
+$arg{objectSpacing} = 3;
+$arg{slicer} = 'slic3r';
+$arg{swinging} = 0;
+
+$arg{printerX} = 200;
+$arg{printerY} = 200;
+$arg{printerZ} = 200;
+$arg{printerMargin} = 3;
 
 foreach(@ARGV) {
    $arg{$1} = $2, next if(/^\-\-([^\s=]+)=(\S+)/);
@@ -39,15 +50,6 @@ foreach(@ARGV) {
 }
 
 my $verbose = $arg{v};
-
-$arg{objectSpacing} = 3 unless(defined $arg{objectSpacing});
-$arg{slicer} = 'slic3r' unless(defined $arg{slicer});
-#$arg{swinging} = 'on' unless(defined $arg{swinging});
-
-$arg{printerX} = 200;
-$arg{printerY} = 200;
-$arg{printerZ} = 200;
-$arg{printerMargin} = 3;
 
 if($arg{printer}&&open(F,$arg{printer})) {
    print STDERR "printer: $arg{printer} profile\n";
@@ -123,6 +125,8 @@ sub help {
       #"\t--cols=c          define columns when concating (default: $arg{cols}) [mm]",
       #"\t--swinging        enable swinging left-to-right to right-to-left when concating (default: $arg{swinging})",
       "\t--objectSpacing=x define distance between items when concating (default: $arg{objectSpacing}) [mm]",
+      "\t--fanSpeed=s      define fan-speed (s=0-255) (default none, defined in gcode)",
+      "\t--temperature=t   define extruder temperature (default none, defined in gcode)", 
       "\tinfo [file1]...   provide info on gcode files (default)",
       "\tslice [file1]...  slice .stl files to .gcode",
       "\tcat [file1]...    concate multiple .gcode files (stdout)",
@@ -160,9 +164,10 @@ sub parseGCode {
          if(/(M\d+)/) {
             my $c = $1;
             $g{"operations.$c.count"}++;
-            $h{object} = 2 if($c eq 'M107'&&$h{object}==1);
+            $h{object} = 1 if($c eq 'M109'&&$h{object}==0);  # -- slic3r sets temperature, we consider it start of object
+            $h{object} = 2 if($c eq 'M107'&&$h{object}==1);  # -- fanoff, end of object
             $h{field} = 'extruderTemperature' if($c eq 'M104');
-            
+
          } elsif(/S([\d\.\-]+)/) {
             my($v) = $1;
             #$g{"operations.S$v.count"}++;
@@ -175,10 +180,12 @@ sub parseGCode {
          } elsif(/(G\d+)/) {
             my $c = $1;
             $g{"operations.$c.count"}++;
-            $h{object} = 1 if($c eq 'G1');
+
+            $h{object} = 1 if($c eq 'G1');                        # -- if not already started object, now we do
             #$h{object} = 1 if($c eq 'G92');
-            #$h{object} = 1 if($c eq 'G28'&&$h{object}==0);
-            $h{object} = 2 if($c eq 'G28'&&$h{object}==1);
+
+            $h{ignore} = 1, last if($c eq 'G28'&&$h{object}==0);  # -- first homing we ignore
+            $h{object} = 2 if($c eq 'G28'&&$h{object}==1);        # -- consider homing after extruding the end of object
             
          } elsif(/([XYZ])([\-\d\.]+)/) {
             my($a,$v) = ($1,$2);
@@ -216,6 +223,9 @@ sub parseGCode {
             last;
          }
       }
+
+      $h{ignore} = 0, next if($h{ignore});   # -- ignore command (e.g. G28 = homing)
+
       if($h{object}==0) {
          ;  # -- head
       } elsif($h{object}==1) {
@@ -251,6 +261,20 @@ sub concatObjects {
       print ";    $_: $arg{$_}\n";
    }
    
+   print "; header-start; for all objects (might be redundent, but we ensure it starts properly)\n";
+   print "G28 ; homing\n";
+   print "M106 S$arg{fanSpeed} ; command-line defines it\n" if(defined $arg{fanSpeed});
+   print "M104 S$arg{temperature} ; set temperature as given via command-line\nM109 S$arg{temperature} ; wait until it's reached\n"
+      if(defined $arg{temperature});
+
+   print join("\n",
+      "G90 ; use absolute coordinates",
+      "G21 ; set units to millimeters",
+      "G92 E0",
+      "M82 ; use absolute distances for extrusion",
+      "; header-end"
+      ),"\n";
+      
    foreach my $f (@f) {
       my $wrapping;
       
@@ -270,7 +294,7 @@ sub concatObjects {
             }
             $yoff = $ymax+$arg{objectSpacing};
             #print STDERR "wrapping\n";
-            print "G1 Y$yoff ; wrapping \n";    # -- let's make sure we don't run into already printed objects
+            print "G1 Y$yoff ; wrapping\n";    # -- let's make sure we don't run into already printed objects
             print "G1 X$yoff\n";
             $wrapping++;
          }
@@ -312,11 +336,14 @@ sub concatObjects {
    $zmax += 3;    # -- give extra 3mm to be sure
    
    print join("\n",     # -- the trailer
+      "; trailer (end of printing)",
       "M107    ; fan off",
+      "M106 S0 ; fan off (the proper way)",
       "M104 S0 ; turn off temperature",
-      "G1 Z$zmax ; move up to higest Z",
+      "G1 Z$zmax ; move up to highest Z",
       "G28 X0  ; home X axis",
-      "M84     ; disable motors"),"\n";
+      "M84     ; disable motors"
+      ),"\n";
    print "; end of concateObjects()\n";
 }
       
@@ -348,6 +375,8 @@ sub reoriginObject {
 sub printObject {
    my($i) = @_;
    foreach(@{$i->{codeObject}}) {
+      next if($arg{fanSpeed}&&(/^M106/||/^M107/));    # -- if fan-speed is set, override it (ignore settings in gcode)
+      next if($arg{temperature}&&(/^M104/||/^M109/)); # -- if temperature is set, override it (ignore settings in gcode)
       print "$_\n";
    }
 }

@@ -1,4 +1,4 @@
-VERSION=0.004
+VERSION=0.006
 
 all::
 	@echo "make install tests clean" 
