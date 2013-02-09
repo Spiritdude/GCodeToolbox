@@ -1,21 +1,20 @@
 #!/usr/bin/perl
 
-# -- Make PLA Test, written by Rene K. Mueller <spiritdude@gmail.com>
+# -- Make ABS Test, written by Rene K. Mueller <spiritdude@gmail.com>
 #
 # License: GPLv2
 #
 $VERSION = '0.001';
-$APPNAME = 'makePLATest';
+$APPNAME = 'makeABSTest';
 #
 # History:
-# 2013/02/09: make it fit on 200x200 nicely
-# 2013/02/08: first version
+# 2013/02/09: first version, make it fit on 200x200 nicely
 
-for(my $t=190; $t<=225; $t+=5) {          # 225-190=35/5+1 = 8 steps
+for(my $t=225; $t<=250; $t+=5) {          # 250-225=25/5+1 = 6 steps
    for(my $if=20; $if<=100; $if+=10) {    # 100-20=80/10+1 = 9 steps (one row)
       $if = sprintf("%03d",$if);
       my($if_) = $if/100;
-      my($f) = "pla-cube-$t-$if.gcode";
+      my($f) = "abs-cube-$t-$if.gcode";
       print "slicing to $f\n";
       `../../gctoolbox --slicer.skirt-distance=4 --slicer.fill-density=$if_ --slicer.temperature=$t --slicer.o=$f slice ../cube10mm.stl`
          unless(-f $f);
