@@ -1,1 +1,1 @@
-Creates a range of cubes with various infills 30%..100% and temperatures 190..230C (for PLA print tests) and then creates one 'oneprint.gcode' file.
+Creates a PLA test plate (200x200) of cubes with various infills 20%..100% and temperatures 190..225C in *one* print.
