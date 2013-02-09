@@ -1,6 +1,6 @@
 <h1>GCodeToolbox<h1>
 
-<b>Version: 0.003 (ALPHA)</b>
+<b>Version: 0.005 (ALPHA)</b>
 
 GCodeToolbox (<tt>gctoolbox</tt>) is a command-line perl-script to manipulate .gcode files (for 3D printers & RepRaps) as created by slicers (like Slic3r or Skeinforge) from .stl files. 
 
@@ -9,6 +9,15 @@ The main aim of this package is to be able to
 <li>create various pieces (.gcode) with different settings (infill, infill-methods, extrude temperature etc) and 
 <li><b>then</b> concate them for <b>one print</b> (yet untested).
 </ol>
+
+<h2>History</h2>
+<ul>
+<li> 2013/02/09: 0.005: proper header and trailer if objects are concated
+<li> 2013/02/09: 0.004: proper movement at wrapping at concating (inserting G1 moves)
+<li> 2013/02/09: 0.003: optional left-to-right to right-to-left swinging
+<li> 2013/02/09: 0.002: passing slicer arguments via --slicer.<key>=<value>
+<li> 2013/02/08: 0.001: start, info and concat works
+</ul>
 
 <h2>Installation</h2>
 <pre>
