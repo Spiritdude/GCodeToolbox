@@ -478,15 +478,16 @@
        width="81.398453"
        height="10.688686"
        x="417.68097"
-       y="376.50833" />
+       y="376.50833"
+       transform="matrix(1.087918,0,0,1,-36.721659,4)" />
     <text
        sodipodi:linespacing="125%"
        id="text3827"
-       y="384.21289"
+       y="388.21289"
        x="419.99329"
-       style="font-size:10px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#2100ba;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans"
+       style="font-size:10px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#2100ba;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans Bold"
        xml:space="preserve"><tspan
-         y="384.21289"
+         y="388.21289"
          x="419.99329"
          id="tspan3829"
          sodipodi:role="line">extruderDiameter</tspan></text>
