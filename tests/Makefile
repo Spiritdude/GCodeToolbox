@@ -1,12 +1,6 @@
 
-all::	cube10mm.gcode 21cubes.gcode 21cubes2.gcode 9cubes3x3.gcode inchaxis.gcode mixed.gcode 
+all::	21cubes.gcode 21cubes2.gcode 9cubes3x3.gcode mixed.gcode mixed2.gcode
 	cd array; make 
-
-cube10mm.gcode:   cube10mm.stl
-	../gctoolbox slice cube10mm.stl
-
-inchaxis.gcode:	inchaxis.stl
-	../gctoolbox slice inchaxis.stl
 
 9cubes3x3.gcode::	cube10mm.gcode
 	../gctoolbox --cols=3 cat 9x cube10mm.gcode > 9cubes3x3.gcode
@@ -19,6 +13,22 @@ inchaxis.gcode:	inchaxis.stl
 
 mixed.gcode:   cube10mm.gcode inchaxis.gcode
 	../gctoolbox cat 3x cube10mm.gcode 5x inchaxis.gcode 12x cube10mm.gcode 2x inchaxis.gcode > mixed.gcode
+
+mixed2.gcode:   cube10mm.gcode inchaxis.gcode steps5mm.gcode
+	../gctoolbox --fileList=f01.list cat > mixed2.gcode
+
+# ----
+
+cube10mm.gcode:   cube10mm.stl
+	../gctoolbox slice cube10mm.stl
+
+steps5mm.gcode:   steps5mm.stl
+	../gctoolbox slice steps5mm.stl
+
+inchaxis.gcode:	inchaxis.stl
+	../gctoolbox slice inchaxis.stl
+
+
 
 clean::
 	rm -f *.gcode

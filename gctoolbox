@@ -64,12 +64,13 @@ if($arg{conf}&&open(F,$arg{conf})) {
 }
 
 if($arg{fileList}&&open(F,$arg{fileList})) {
-   print STDERR "fileList $arg{conf}\n";
+   print STDERR "fileList $arg{fileList}\n";
    while(<F>) {
       chop;
       next if(/^\s*#/);
       s/#.*$//;
       s/\s*$//;   # -- remove trailing spaces
+      next if(/^\s*$/); # -- ignore empty lines
       if(-e $_) {
          push(@f,$_);
       } else {
