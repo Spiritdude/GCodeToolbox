@@ -140,7 +140,7 @@ Right now <tt>gctoolbox</tt> concatenates pieces so they are printed individuall
 
 <img src="imgs/crash.png">
 
-So, be sure --objectSpacing=os and --slicer.skirt_distance=ds (os+ds) is greater than the nozzle diameter.
+So, be sure --objectSpacing=os and --slicer.skirt_distance=ds (os+ds) is greater than the nozzle radius (nozzle diameter/2).
 
 <h3>Tests</h3>
 
