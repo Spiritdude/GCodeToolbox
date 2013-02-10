@@ -7,7 +7,7 @@ GCodeToolbox (<tt>gctoolbox</tt>) is a command-line perl-script to manipulate .g
 The main aim of this package is to be able to 
 <ol>
 <li>create various pieces (.gcode) with different settings (infill, infill-methods, extrude temperature etc) and 
-<li><b>then</b> concatenate (cat) them for <b>one print</b> (yet untested).
+<li><b>then</b> concatenate (cat) them for <b>one print</b> (yet untested), see for <a href="test/array/">ABS & PLA examples</a>.
 </ol>
 
 <h2>History</h2>
