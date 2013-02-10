@@ -15,7 +15,7 @@ inchaxis.gcode:	inchaxis.stl
 	../gctoolbox cat 21x cube10mm.gcode > 21cubes.gcode
 
 21cubes2.gcode::	cube10mm.gcode
-	../gctoolbox --printer=miniprusa.conf cat 21x cube10mm.gcode > 21cubes2.gcode
+	../gctoolbox --printer=../printers/miniprusa.conf cat 21x cube10mm.gcode > 21cubes2.gcode
 
 mixed.gcode:   cube10mm.gcode inchaxis.gcode
 	../gctoolbox cat 3x cube10mm.gcode 5x inchaxis.gcode 12x cube10mm.gcode 2x inchaxis.gcode > mixed.gcode

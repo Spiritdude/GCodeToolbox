@@ -4,10 +4,11 @@
 #
 # License: GPLv2
 #
-$VERSION = '0.006';
+$VERSION = '0.007';
 $APPNAME = 'GCodeToolbox';
 #
 # History:
+# 2013/02/10: 0.007: conf and fileList support
 # 2013/02/09: 0.006: fanSpeed and temperature arguments possible, override gcode, proper filtering of object settings
 # 2013/02/09: 0.005: proper header and trailer if objects are concatenated
 # 2013/02/09: 0.004: proper movement at wrapping at concatenating (inserting G1 moves)
@@ -48,13 +49,42 @@ foreach(@ARGV) {
    }
 }
 
-my $verbose = $arg{v};
-
-if($arg{printer}&&open(F,$arg{printer})) {
-   print STDERR "printer: $arg{printer} profile\n";
+if($arg{conf}&&open(F,$arg{conf})) {
+   print STDERR "configuration $arg{conf}\n";
    while(<F>) {
       chop;
       next if(/^\s*#/);
+      s/#.*$//;
+      if(/^\s*([^\s:=]+)\s*[:=]\s*(\S.+)\s*$/) {
+         my($k,$v) = ($1,$2);
+         $arg{$k} = $v;
+      } 
+   }
+   close(F);
+}
+
+if($arg{fileList}&&open(F,$arg{fileList})) {
+   print STDERR "fileList $arg{conf}\n";
+   while(<F>) {
+      chop;
+      next if(/^\s*#/);
+      s/#.*$//;
+      s/\s*$//;   # -- remove trailing spaces
+      if(-e $_) {
+         push(@f,$_);
+      } else {
+         print STDERR "ERROR: file '$_' listed, but doesn't exist, disregarded\n";
+      }
+   }
+   close(F);
+}
+
+if($arg{printer}&&open(F,$arg{printer})) {
+   print STDERR "printer $arg{printer} (profile)\n";
+   while(<F>) {
+      chop;
+      next if(/^\s*#/);
+      s/#.*$//;
       if(/^\s*([^\s:=]+)\s*[:=]\s*(\S.+)\s*$/) {
          my($k,$v) = ($1,$2);
          $k =~ s/(.)/uc $1/e;
@@ -63,6 +93,8 @@ if($arg{printer}&&open(F,$arg{printer})) {
    }
    close(F);
 }
+
+my $verbose = $arg{v};
 
 help() if($#f<0); # -- nothing to do
 process($cmd,@f);
@@ -113,7 +145,7 @@ sub help {
    print STDERR join("\n",
       "$APPNAME $VERSION:",
       "\t-h or --help      this help",
-      "\t-v                increase verbosity", 
+      "\t-v or --verbose=v increase verbosity", 
       "\t--slicer=cmd      define slicer (default: $arg{slicer})",
       "\t--slicer.[arg]=x  define slicer arguments passed on slicer (e.g. --slicer.skirts=0)",
       "\t--printer=file    reference printer profile",
@@ -126,6 +158,8 @@ sub help {
       "\t--objectSpacing=x define distance between items when concat (default: $arg{objectSpacing}) [mm]",
       "\t--fanSpeed=s      define fan-speed (s=0-255) (default none, defined in gcode)",
       "\t--temperature=t   define extruder temperature (default none, defined in gcode)", 
+      "\t--conf=file       configuration file, all command-line arguments (without '--'), one per line",
+      "\t--fileList=file   file with list of files (one file per line)",
       "\tinfo [file1]...   provide info on gcode files",
       "\tslice [file1]...  slice .stl files to .gcode",
       "\tcat [file1]...    concat multiple .gcode files to stdout",

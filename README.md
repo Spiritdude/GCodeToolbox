@@ -29,9 +29,9 @@ which copies the <tt>gctoolbox</tt> to /usr/local/bin/ - that's all.
 
 <h2>Usage</h2>
 <pre>
-GCodeToolbox 0.006:
+GCodeToolbox 0.007:
         -h or --help      this help
-        -v                increase verbosity
+        -v or -verbose=v  increase verbosity
         --slicer=cmd      define slicer (default: slic3r)
         --slicer.[arg]=x  define slicer arguments passed on slicer (e.g. --slicer.skirts=0)
         --printer=file    reference printer profile
@@ -43,14 +43,17 @@ GCodeToolbox 0.006:
         --objectSpacing=x define distance between items when concat (default: 3) [mm]
         --fanSpeed=s      define fan-speed (s=0-255) (default none, defined in gcode)
         --temperature=t   define extruder temperature (default none, defined in gcode)
+        --conf=file       configuration file, all command-line arguments (without '--'), one per line
+        --fileList=file   file with list of files (one file per line)
         info [file1]...   provide info on gcode files
         slice [file1]...  slice .stl files to .gcode
         cat [file1]...    concat multiple .gcode files to stdout
+
 </pre>
 
 <h2>Examples</h2>
 
-<h3>Information of GCODE</h3>
+<h3>Information of GCode</h3>
 
 <pre>
 % gctoolbox info cube10mm.gcode
@@ -58,7 +61,7 @@ GCodeToolbox 0.006:
 
 prints out some information about the actual gcode
 
-<h3>Slicing STL to GCODE</h3>
+<h3>Slicing STL to GCode</h3>
 
 <pre>
 % gctoolbox slice cube10mm.stl
