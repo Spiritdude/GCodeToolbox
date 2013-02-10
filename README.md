@@ -124,7 +124,8 @@ You can define a profile of your printer (default X=200, Y=200, Z=200 and margin
 X = 150
 Y = 180
 Z = 120
-margin = 3
+margin = 3              
+nozzleDiameter = 20     # -- important to set to avoid collision when objects are concat(enat)ed
 </pre>
    
 defines the build-volume, margin of the built-platform toward the pieces, all variables of .conf file are also available via command-line --printer[key]=[value] as well ([key] starts with uppercase letter), for example:

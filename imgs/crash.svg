@@ -295,7 +295,7 @@
          sodipodi:role="line"
          id="tspan7337"
          x="186.25836"
-         y="365.08383">skirt_distance</tspan></text>
+         y="365.08383">skirt-distance</tspan></text>
     <path
        sodipodi:nodetypes="cc"
        inkscape:connector-curvature="0"
@@ -399,7 +399,7 @@
          sodipodi:role="line"
          x="27.755562"
          y="286.53351"
-         id="tspan7502">skirt_distance  + objectSpacing &gt;  nozzle radius</tspan></text>
+         id="tspan7502">skirt-distance  + objectSpacing &gt;  nozzle radius</tspan></text>
     <path
        sodipodi:type="star"
        style="fill:url(#radialGradient7564);fill-opacity:1;stroke:#ff0005;stroke-opacity:1"

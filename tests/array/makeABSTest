@@ -11,7 +11,7 @@ $APPNAME = 'makeABSTest';
 # 2013/02/09: first version, make it fit on 200x200 nicely
 
 for(my $t=225; $t<=250; $t+=5) {          # 250-225=25/5+1 = 6 steps
-   for(my $if=20; $if<=100; $if+=10) {    # 100-20=80/10+1 = 9 steps (one row)
+   for(my $if=30; $if<=100; $if+=10) {    # 100-30=70/10+1 = 8 steps (one row)
       $if = sprintf("%03d",$if);
       my($if_) = $if/100;
       my($f) = "abs-cube-$t-$if.gcode";

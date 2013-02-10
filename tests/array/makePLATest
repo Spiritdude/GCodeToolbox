@@ -12,7 +12,7 @@ $APPNAME = 'makePLATest';
 # 2013/02/08: first version
 
 for(my $t=190; $t<=225; $t+=5) {          # 225-190=35/5+1 = 8 steps
-   for(my $if=20; $if<=100; $if+=10) {    # 100-20=80/10+1 = 9 steps (one row)
+   for(my $if=30; $if<=100; $if+=10) {    # 100-30=70/10+1 = 8 steps (one row)
       $if = sprintf("%03d",$if);
       my($if_) = $if/100;
       my($f) = "pla-cube-$t-$if.gcode";
