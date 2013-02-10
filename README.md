@@ -32,7 +32,7 @@ which copies the <tt>gctoolbox</tt> to /usr/local/bin/ - that's all.
 <pre>
 GCodeToolbox 0.007:
         -h or --help      this help
-        -v or -verbose=v  increase verbosity
+        -v or --verbose=v increase verbosity
         --slicer=cmd      define slicer (default: slic3r)
         --slicer.[arg]=x  define slicer arguments passed on slicer (e.g. --slicer.skirts=0)
         --printer=file    reference printer profile
