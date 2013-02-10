@@ -32,7 +32,7 @@ which copies the <tt>gctoolbox</tt> to /usr/local/bin/ - that's all.
 <pre>
 GCodeToolbox 0.007: gctoolbox [switches] [cmd] [file1] .. [fileN]
 
-        info [file1]...   provide info on gcode files
+        info [file1]...   provide info on .gcode files
         slice [file1]...  slice .stl files to .gcode
         cat [file1]...    concat multiple .gcode files to stdout
 

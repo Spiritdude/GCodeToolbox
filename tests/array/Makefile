@@ -1,7 +1,7 @@
 all:: PLAPlate200x200.gcode ABSPlate200x200.gcode
 
 clean::
-	rm -f *.gcode
+	rm -f *.gcode Thumbs.db
 
 PLAPlate200x200.gcode:
 	./makePLATest

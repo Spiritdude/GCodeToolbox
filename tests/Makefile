@@ -31,5 +31,5 @@ inchaxis.gcode:	inchaxis.stl
 
 
 clean::
-	rm -f *.gcode
+	rm -f *.gcode Thumbs.db
 	cd array; make clean
