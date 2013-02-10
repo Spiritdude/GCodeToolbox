@@ -31,28 +31,28 @@ which copies the <tt>gctoolbox</tt> to /usr/local/bin/ - that's all.
 
 <h2>Usage</h2>
 <pre>
-GCodeToolbox 0.007: gctoolbox [switches] [cmd] [file1] .. [fileN]
+GCodeToolbox 0.008: gctoolbox [switches] [cmd] [file1]..[fileN]
 
-        info [file1]...   provide info on .gcode files
-        slice [file1]...  slice .stl files to .gcode
-        cat [file1]...    concat multiple .gcode files to stdout
+        info [file1]...    provide info on .gcode files
+        slice [file1]...   slice .stl files to .gcode
+        cat [file1]...     concat multiple .gcode files to stdout
 
-        -h or --help      this help
-        -v or --verbose=v increase verbosity
-        --slicer=cmd      define slicer (default: slic3r)
-        --slicer.[arg]=x  define slicer arguments passed on slicer (e.g. --slicer.skirts=0)
-        --printer=file    reference printer profile
-        --printerX=x      define build width (default: 200) [mm]
-        --printerY=y      define build depth (default: 200) [mm]
-        --printerZ=z      define build height (default: 200) [mm]
-        --printerMargin=m define margin to perimeter of platform (default: 3) [mm]
-        --cols=c          define columns when concat(enating) (default none, auto-overflow)
-        --objectSpacing=x define distance between items when concat (default: 3) [mm]
-        --fanSpeed=s      define fan-speed (s=0-255) (default none, defined in gcode)
-        --temperature=t   define extruder temperature (default none, defined in gcode)
-        --conf=file       configuration file, all command-line arguments (without '--'), one per line
-        --fileList=file   file with list of files (one file per line)
-
+        -h or --help       this help
+        -v or --verbose=v  increase verbosity
+        --slicer=cmd       define slicer (default: slic3r)
+        --slicer.[arg]=x   define slicer arguments passed on slicer (e.g. --slicer.skirts=0)
+        --printer=file     reference printer profile
+        --printerX=x       define build width (default: 200) [mm]
+        --printerY=y       define build depth (default: 200) [mm]
+        --printerZ=z       define build height (default: 200) [mm]
+        --printerMargin=m  define margin to perimeter of platform (default: 3) [mm]
+        --printerExtruderDiameter=d define extruder diameter (default: 16) [mm]
+        --cols=c           define columns when concat(enating) (default none, auto-overflow) [mm]
+        --objectSpacing=x  define distance between items when concat (default: 3) [mm]
+        --fanSpeed=s       define fan-speed (s=0-255) (default none, defined in gcode)
+        --temperature=t    define extruder temperature (default none, defined in gcode)
+        --conf=file        configuration file, all command-line arguments (without '--'), one per line
+        --fileList=file    file with list of files (one file per line)
 </pre>
 
 <h2>Examples</h2>
