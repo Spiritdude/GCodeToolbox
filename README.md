@@ -92,7 +92,7 @@ You can also define a multiplication:
 <pre>
 % gctoolbox cat 10x cube10mm.gcode 3x inchaxis.gcode > mixed2.gcode
 </pre>
-which concatinates 10 times cube10mm's and 3 times inchaxis's.
+which concatenates 10 times cube10mm's and 3 times inchaxis's.
 
 By default pieces are arranged left-to-right and when it overflows they are a placed further on the platform, but you can force wrapping:
 <pre>
@@ -102,7 +102,7 @@ By default pieces are arranged left-to-right and when it overflows they are a pl
 which is ideal when a grid of test objects with different settings are made (e.g. per row one temperature, per column certain settings like infill density).
 
 <pre>
-% gctoolbox --fileList myfiles.list cat > mixed3.gcode
+% gctoolbox --fileList=myfiles.list cat > mixed3.gcode
 </pre>
 
 whereas <b>myfiles.list</b> is
