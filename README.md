@@ -85,7 +85,7 @@ Concatenating (short 'cat', like the UNIX command 'cat') is the main feature of 
 </pre>
 concatenate several gcode files into one gcode.
 
-<a href="tests/sshot-6.png"><img src="tests/sshot-6-300px.png"></a>
+<a href="imgs/sshot-6.png"><img src="imgs/sshot-6-300px.png"></a>
 
 You can also define a multiplication:
 
