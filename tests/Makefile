@@ -28,9 +28,6 @@ steps5mm.gcode:   steps5mm.stl
 inchaxis.gcode:	inchaxis.stl
 	../gctoolbox slice inchaxis.stl
 
-sshot-6-300px.png:	sshot-6.png
-	convert -resize 300x sshot-6.png sshot-6-300px.png
-
 clean::
 	rm -f *.gcode Thumbs.db
 	cd array; make clean
