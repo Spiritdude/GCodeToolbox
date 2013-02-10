@@ -138,9 +138,9 @@ defines the build-volume, margin of the built-platform toward the pieces, all va
 
 Right now <tt>gctoolbox</tt> concatenates pieces so they are printed individually complete first (later version may include an option), which poses some danger that the nozzle crashes into existing already printed items:
 
-<a href="imgs/crash.png"><img src="imgs/crash-300px.png"></a>
+<img src="imgs/crash.png">
 
-So, be sure --objectSpacing=x and --slicer.skirt_distance=y (x+y) is greater than the nozzle diameter.
+So, be sure --objectSpacing=os and --slicer.skirt_distance=ds (os+ds) is greater than the nozzle diameter.
 
 <h3>Tests</h3>
 
