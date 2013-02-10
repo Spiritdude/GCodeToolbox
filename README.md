@@ -133,7 +133,7 @@ defines the build-volume, margin of the built-platform toward the pieces, all va
 
 <pre>
 % gctoolbox --printer=myprinter.conf cat 10x cube10mm.gcode > 10cubes.gcode
-% gctoolbox --printerX=200 --printerY=180 --printerMargin=5 --printerExtuderDiameter=20 --objectSpacing=5 3x cube10mm.gcode > 3cubes.gcode
+% gctoolbox --printerX=200 --printerY=180 --printerMargin=5 --printerExtruderDiameter=20 --objectSpacing=5 3x cube10mm.gcode > 3cubes.gcode
 </pre>
 
 <h3>Collision Awareness</h3>
