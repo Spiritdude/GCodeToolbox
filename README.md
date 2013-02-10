@@ -101,6 +101,21 @@ By default pieces are arranged left-to-right and when it overflows they are a pl
 
 which is ideal when a grid of test objects with different settings are made (e.g. per row one temperature, per column certain settings like infill density).
 
+<pre>
+% gctoolbox --fileList myfiles.list cat > mixed3.gcode
+</pre>
+
+whereas <b>myfiles.list</b> is
+<pre>
+# my objects
+cube10mm.gcode
+cube10mm.gcode
+inchaxis.gcode
+inchaxis.gcode
+steps5mm.gcode
+steps5mm.gcode
+</pre>
+
 <h3>Printer Definition</h3>
 
 You can define a profile of your printer (default X=200, Y=200, Z=200 and margin=3), with e.g. "myprinter.conf":
