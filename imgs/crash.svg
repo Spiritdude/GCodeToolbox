@@ -65,6 +65,18 @@
        fy="360.50076"
        r="23.499236"
        gradientUnits="userSpaceOnUse" />
+    <filter
+       inkscape:collect="always"
+       id="filter3837"
+       x="-0.035220126"
+       width="1.0704403"
+       y="-0.26821479"
+       height="1.5364296">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="1.1945266"
+         id="feGaussianBlur3839" />
+    </filter>
   </defs>
   <sodipodi:namedview
      id="base"
@@ -75,15 +87,15 @@
      inkscape:pageshadow="2"
      inkscape:zoom="1.2162393"
      inkscape:cx="358.87415"
-     inkscape:cy="711.12885"
+     inkscape:cy="747.30594"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
      showborder="false"
      inkscape:window-width="1280"
-     inkscape:window-height="1002"
+     inkscape:window-height="748"
      inkscape:window-x="-8"
-     inkscape:window-y="-8"
+     inkscape:window-y="1016"
      inkscape:window-maximized="1" />
   <metadata
      id="metadata6421">
@@ -246,21 +258,21 @@
        sodipodi:nodetypes="cc" />
     <path
        style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:url(#Arrow1Lstart);marker-end:url(#Arrow1Lend)"
-       d="m -22.915529,407.52986 59.412656,0"
+       d="m -22.915529,401.52986 59.412656,0"
        id="path6951"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="cc" />
     <text
        xml:space="preserve"
-       style="font-size:10px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans"
-       x="-21.084955"
-       y="395.00296"
+       style="font-size:10px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#2100ba;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans Bold"
+       x="-25.084955"
+       y="393.00296"
        id="text7323"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
          id="tspan7325"
-         x="-21.084955"
-         y="395.00296">printerMargin</tspan></text>
+         x="-25.084955"
+         y="393.00296">printerMargin</tspan></text>
     <path
        sodipodi:nodetypes="cc"
        inkscape:connector-curvature="0"
@@ -287,20 +299,20 @@
          sodipodi:role="line">skirt</tspan></text>
     <text
        xml:space="preserve"
-       style="font-size:10px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans"
+       style="font-size:10px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#de00ff;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans Bold"
        x="186.25836"
-       y="365.08383"
+       y="367.08383"
        id="text7335"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
          id="tspan7337"
          x="186.25836"
-         y="365.08383">skirt-distance</tspan></text>
+         y="367.08383">skirt-distance</tspan></text>
     <path
        sodipodi:nodetypes="cc"
        inkscape:connector-curvature="0"
        id="path7339"
-       d="m 179.08447,407.52986 33.38773,0"
+       d="m 179.08447,401.52986 33.38773,0"
        style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:url(#Arrow1Lstart);marker-end:url(#Arrow1Lend)" />
     <path
        style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
@@ -336,7 +348,7 @@
        style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
     <path
        style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:url(#Arrow1Lstart);marker-end:url(#Arrow1Lend)"
-       d="m 215.08447,407.52986 33.38773,0"
+       d="m 215.08447,401.52986 33.38773,0"
        id="path7353"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="cc" />
@@ -349,11 +361,11 @@
     <text
        sodipodi:linespacing="125%"
        id="text7368"
-       y="388.21289"
+       y="392.21289"
        x="203.9933"
-       style="font-size:10px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans"
+       style="font-size:10px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#2100ba;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans Bold"
        xml:space="preserve"><tspan
-         y="388.21289"
+         y="392.21289"
          x="203.9933"
          id="tspan7370"
          sodipodi:role="line">objectSpacing</tspan></text>
@@ -382,24 +394,31 @@
        id="path7490"
        d="m 393.08447,435.52986 66.67275,0"
        style="fill:none;stroke:#000000;stroke-width:1.41312551;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:url(#Arrow1Lstart);marker-end:url(#Arrow1Lend)" />
-    <rect
-       style="fill:#ffffff;fill-opacity:1;stroke:#ff0000;stroke-opacity:1"
-       id="rect4050"
-       width="360.1265"
-       height="38.643711"
-       x="3.2888265"
-       y="261.39941" />
     <text
        xml:space="preserve"
-       style="font-size:14.73103142px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#ff0000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans Bold"
-       x="10.722805"
-       y="286.53351"
+       style="font-size:12.25238228px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#ff0000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans Bold"
+       x="50.722805"
+       y="255.89871"
        id="text7496"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
-         x="10.722805"
-         y="286.53351"
-         id="tspan7502">skirt-distance  + objectSpacing &gt;  extruder radius</tspan></text>
+         x="50.722805"
+         y="255.89871"
+         id="tspan7502"><tspan
+           style="fill:#de00ff;fill-opacity:1"
+           id="tspan3861">skirt-distance</tspan><tspan
+           style="fill:#000274;fill-opacity:1"
+           id="tspan3845"><tspan
+   style="fill:#000000;fill-opacity:1"
+   id="tspan3867">  +</tspan> objectSpacing</tspan><tspan
+           style="fill:#000000;fill-opacity:1"
+           id="tspan3865"> &gt;  extruder radius</tspan></tspan></text>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1.4;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:url(#Arrow1Lstart);marker-end:url(#Arrow1Lend)"
+       d="m 393.08447,395.52986 134.22073,0"
+       id="path3825"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc" />
     <path
        sodipodi:type="star"
        style="fill:url(#radialGradient7564);fill-opacity:1;stroke:#ff0005;stroke-opacity:1"
@@ -445,13 +464,112 @@
     <text
        xml:space="preserve"
        style="font-size:10.40796471px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
-       x="399.68924"
+       x="185.68924"
        y="516.90314"
        id="text7574"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
          id="tspan7576"
-         x="399.68924"
-         y="516.90314">by Rene K. Mueller for GCodeToolbox, 2013/02/11, CC BY</tspan></text>
+         x="185.68924"
+         y="516.90314">by Rene K. Mueller &lt;spiritdude@gmail.com&gt; for GCodeToolbox, 2013/02/11, Creative Commons CC BY</tspan></text>
+    <rect
+       style="fill:#afafaf;fill-opacity:1;stroke:none;filter:url(#filter3837)"
+       id="rect3831"
+       width="81.398453"
+       height="10.688686"
+       x="417.68097"
+       y="376.50833" />
+    <text
+       sodipodi:linespacing="125%"
+       id="text3827"
+       y="384.21289"
+       x="419.99329"
+       style="font-size:10px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#2100ba;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans"
+       xml:space="preserve"><tspan
+         y="384.21289"
+         x="419.99329"
+         id="tspan3829"
+         sodipodi:role="line">extruderDiameter</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:13.7070961px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="134.48184"
+       y="230.49857"
+       id="text3841"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan3843"
+         x="134.48184"
+         y="230.49857">to avoid collision</tspan></text>
+    <text
+       sodipodi:linespacing="125%"
+       id="text3900"
+       y="289.1683"
+       x="10.722805"
+       style="font-size:12.25238228px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#ff0000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans Bold"
+       xml:space="preserve"><tspan
+         id="tspan3902"
+         y="289.1683"
+         x="10.722805"
+         sodipodi:role="line"><tspan
+           id="tspan3940"
+           style="fill:#000000;fill-opacity:1">( </tspan><tspan
+           id="tspan3904"
+           style="fill:#de00ff;fill-opacity:1">skirt-distance</tspan><tspan
+           id="tspan3942"
+           style="fill:#000000;fill-opacity:1">  +</tspan><tspan
+           id="tspan3906"
+           style="fill:#000274;fill-opacity:1"> objectSpacing</tspan><tspan
+           id="tspan3910"
+           style="fill:#000000;fill-opacity:1"> ) * 2 &gt;  </tspan><tspan
+           id="tspan3946"
+           style="fill:#100070;fill-opacity:1">extruderDiameter</tspan></tspan></text>
+    <text
+       sodipodi:linespacing="125%"
+       id="text3934"
+       y="272.49857"
+       x="174.48184"
+       style="font-size:13.7070961px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       xml:space="preserve"><tspan
+         y="272.49857"
+         x="174.48184"
+         id="tspan3936"
+         sodipodi:role="line">or</tspan></text>
+    <rect
+       style="fill:#170296;fill-opacity:1;stroke:#000000;stroke-width:0.76766120999999998;stroke-opacity:1"
+       id="rect3948"
+       width="10.098818"
+       height="10.098818"
+       x="45.927402"
+       y="315.54886" />
+    <text
+       sodipodi:linespacing="125%"
+       id="text3950"
+       y="323.62256"
+       x="61.94429"
+       style="font-size:10px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans;font-stretch:normal;font-variant:normal;text-anchor:start;text-align:start;writing-mode:lr"
+       xml:space="preserve"><tspan
+         y="323.62256"
+         x="61.94429"
+         id="tspan3952"
+         sodipodi:role="line">value defined in GCodeToolbox (gctoolbox)</tspan></text>
+    <rect
+       y="335.54886"
+       x="45.927402"
+       height="10.098818"
+       width="10.098818"
+       id="rect3954"
+       style="fill:#aa04cc;fill-opacity:1;stroke:#000000;stroke-width:0.76766120999999998;stroke-opacity:1" />
+    <text
+       xml:space="preserve"
+       style="font-size:10px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans;font-stretch:normal;font-variant:normal;text-anchor:start;text-align:start;writing-mode:lr"
+       x="61.94429"
+       y="343.62256"
+       id="text3956"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan3958"
+         x="61.94429"
+         y="343.62256">value defined in slicer (e.g. Slic3r), optionally also via gctoolbox</tspan></text>
   </g>
 </svg>
