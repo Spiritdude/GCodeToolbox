@@ -134,6 +134,12 @@ defines the build-volume, margin of the built-platform toward the pieces, all va
 % gctoolbox --printerX=200 --printerY=180 --printerMargin=5 --objectSpacing=5 3x cube10mm.gcode > 3cubes.gcode
 </pre>
 
+<h3>Collision Awareness</h3>
+
+Right now <tt>gctoolbox</tt> concatenates pieces so they are printed individually complete first (later version may include an option), which poses some danger that the nozzle crashes into existing already printed items:
+
+<img src="imgs/crash-300px.png">
+
 <h3>Tests</h3>
 
 <pre>
@@ -145,7 +151,6 @@ and it will do some tests in tests/ and tests/array/; best explore the files.
 <h3>Visualization</h3>
 
 Best visit http://www.buildlog.net/gview/ and simply drag&drop your .gcode file to the browser-window, and it will preview the gcode.
-
 
 That's all for now,
 
