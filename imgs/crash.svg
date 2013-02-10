@@ -399,7 +399,7 @@
          sodipodi:role="line"
          x="27.755562"
          y="286.53351"
-         id="tspan7502">skirt-distance  + objectSpacing &gt;  nozzle radius</tspan></text>
+         id="tspan7502">skirt-distance  + objectSpacing &gt;  extruder radius</tspan></text>
     <path
        sodipodi:type="star"
        style="fill:url(#radialGradient7564);fill-opacity:1;stroke:#ff0005;stroke-opacity:1"
@@ -419,14 +419,14 @@
     <text
        xml:space="preserve"
        style="font-size:10px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans"
-       x="397.99329"
+       x="391.99329"
        y="424.21289"
        id="text7492"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
          id="tspan7494"
-         x="397.99329"
-         y="424.21289">nozzle radius</tspan></text>
+         x="391.99329"
+         y="424.21289">extruder radius</tspan></text>
     <text
        xml:space="preserve"
        style="font-size:19.63664246px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans Bold"
@@ -452,6 +452,6 @@
          sodipodi:role="line"
          id="tspan7576"
          x="399.68924"
-         y="516.90314">by Rene K. Mueller for GCodeToolbox, 2013/02/10, CC BY</tspan></text>
+         y="516.90314">by Rene K. Mueller for GCodeToolbox, 2013/02/11, CC BY</tspan></text>
   </g>
 </svg>

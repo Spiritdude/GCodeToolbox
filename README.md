@@ -1,6 +1,6 @@
 <h1>GCodeToolbox<h1>
 
-<b>Version: 0.007 (ALPHA)</b>
+<b>Version: 0.008 (ALPHA)</b>
 
 GCodeToolbox (<tt>gctoolbox</tt>) is a command-line perl-script to manipulate .gcode files (for 3D printers & RepRaps) as created by slicers (like Slic3r or Skeinforge) from .stl files. 
 
@@ -12,6 +12,7 @@ The main aim of this package is to be able to
 
 <h2>History</h2>
 <ul>
+<li> 2013/02/11: 0.008: printerExtruderDiameter input, affects objectSpacing & slicer.skirt-distance (slic3r)
 <li> 2013/02/10: 0.007: conf and fileList support
 <li> 2013/02/09: 0.006: fanSpeed and temperature arguments possible, override gcode, proper filtering of object settings
 <li> 2013/02/09: 0.005: proper header and trailer if objects are concated
@@ -125,14 +126,14 @@ X = 150
 Y = 180
 Z = 120
 margin = 3              
-nozzleDiameter = 20     # -- important to set to avoid collision when objects are concat(enat)ed
+extruderDiameter = 20     # -- important to set to avoid collision when objects are concat(enat)ed
 </pre>
    
 defines the build-volume, margin of the built-platform toward the pieces, all variables of .conf file are also available via command-line --printer[key]=[value] as well ([key] starts with uppercase letter), for example:
 
 <pre>
 % gctoolbox --printer=myprinter.conf cat 10x cube10mm.gcode > 10cubes.gcode
-% gctoolbox --printerX=200 --printerY=180 --printerMargin=5 --objectSpacing=5 3x cube10mm.gcode > 3cubes.gcode
+% gctoolbox --printerX=200 --printerY=180 --printerMargin=5 --printerExtuderDiameter=20 --objectSpacing=5 3x cube10mm.gcode > 3cubes.gcode
 </pre>
 
 <h3>Collision Awareness</h3>
@@ -141,7 +142,7 @@ Right now <tt>gctoolbox</tt> concatenates pieces so they are printed individuall
 
 <img src="imgs/crash.png">
 
-So, be sure --objectSpacing=os and --slicer.skirt_distance=ds (os+ds) is greater than the nozzle radius (nozzle diameter/2).
+<tt>gctoolbox</tt> prints out a warning if these conditions are not met, and increases objectSpacing so there is no collision; important is to set the extruderDiameter properly.
 
 <h3>Tests</h3>
 
