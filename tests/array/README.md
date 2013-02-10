@@ -8,6 +8,8 @@ Once you ran <tt>make</tt> you get:
 
 It enables you to profile your filament very precisely with <b>one print</b> only.
 
+<img src="../../imgs/PLAPlate200x200.png">
+
 <h3>References</h3>
 <ul>
 <li><a href="http://reprap.org/wiki/ABS">ABS</a>
