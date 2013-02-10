@@ -12,6 +12,7 @@ The main aim of this package is to be able to
 
 <h2>History</h2>
 <ul>
+<li> 2013/02/10: 0.007: conf and fileList support
 <li> 2013/02/09: 0.006: fanSpeed and temperature arguments possible, override gcode, proper filtering of object settings
 <li> 2013/02/09: 0.005: proper header and trailer if objects are concated
 <li> 2013/02/09: 0.004: proper movement at wrapping at concating (inserting G1 moves)
