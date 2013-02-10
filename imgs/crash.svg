@@ -74,7 +74,7 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="1.2162393"
-     inkscape:cx="457.12784"
+     inkscape:cx="358.87415"
      inkscape:cy="711.12885"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
@@ -383,7 +383,7 @@
        d="m 393.08447,435.52986 66.67275,0"
        style="fill:none;stroke:#000000;stroke-width:1.41312551;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:url(#Arrow1Lstart);marker-end:url(#Arrow1Lend)" />
     <rect
-       style="fill:#ff9e04;fill-opacity:1;stroke:#000000;stroke-opacity:1"
+       style="fill:#ffffff;fill-opacity:1;stroke:#ff0000;stroke-opacity:1"
        id="rect4050"
        width="360.1265"
        height="38.643711"
@@ -391,13 +391,13 @@
        y="261.39941" />
     <text
        xml:space="preserve"
-       style="font-size:14.73103142px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans"
-       x="27.755562"
+       style="font-size:14.73103142px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#ff0000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans Bold"
+       x="10.722805"
        y="286.53351"
        id="text7496"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
-         x="27.755562"
+         x="10.722805"
          y="286.53351"
          id="tspan7502">skirt-distance  + objectSpacing &gt;  extruder radius</tspan></text>
     <path
