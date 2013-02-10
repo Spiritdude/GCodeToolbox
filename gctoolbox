@@ -144,7 +144,12 @@ sub process {
 
 sub help {
    print STDERR join("\n",
-      "$APPNAME $VERSION:",
+      "$APPNAME $VERSION: gctoolbox [switches] [cmd] [file1]..[fileN]",
+      "",
+      "\tinfo [file1]...   provide info on gcode files",
+      "\tslice [file1]...  slice .stl files to .gcode",
+      "\tcat [file1]...    concat multiple .gcode files to stdout",
+      "",
       "\t-h or --help      this help",
       "\t-v or --verbose=v increase verbosity", 
       "\t--slicer=cmd      define slicer (default: $arg{slicer})",
@@ -161,9 +166,6 @@ sub help {
       "\t--temperature=t   define extruder temperature (default none, defined in gcode)", 
       "\t--conf=file       configuration file, all command-line arguments (without '--'), one per line",
       "\t--fileList=file   file with list of files (one file per line)",
-      "\tinfo [file1]...   provide info on gcode files",
-      "\tslice [file1]...  slice .stl files to .gcode",
-      "\tcat [file1]...    concat multiple .gcode files to stdout",
       ),"\n\n";
    exit 1;
 }

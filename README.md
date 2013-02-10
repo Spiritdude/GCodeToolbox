@@ -30,7 +30,12 @@ which copies the <tt>gctoolbox</tt> to /usr/local/bin/ - that's all.
 
 <h2>Usage</h2>
 <pre>
-GCodeToolbox 0.007:
+GCodeToolbox 0.007: gctoolbox [switches] [cmd] [file1] .. [fileN]
+
+        info [file1]...   provide info on gcode files
+        slice [file1]...  slice .stl files to .gcode
+        cat [file1]...    concat multiple .gcode files to stdout
+
         -h or --help      this help
         -v or --verbose=v increase verbosity
         --slicer=cmd      define slicer (default: slic3r)
@@ -46,9 +51,6 @@ GCodeToolbox 0.007:
         --temperature=t   define extruder temperature (default none, defined in gcode)
         --conf=file       configuration file, all command-line arguments (without '--'), one per line
         --fileList=file   file with list of files (one file per line)
-        info [file1]...   provide info on gcode files
-        slice [file1]...  slice .stl files to .gcode
-        cat [file1]...    concat multiple .gcode files to stdout
 
 </pre>
 
