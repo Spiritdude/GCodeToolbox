@@ -102,12 +102,12 @@
      inkscape:groupmode="layer"
      id="layer1">
     <rect
-       style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:none"
+       style="fill:#ffffff;fill-opacity:1;stroke:none"
        id="rect7568"
        width="723.5152"
-       height="449.74701"
+       height="430.01404"
        x="-39.190407"
-       y="76.071701"
+       y="95.804657"
        inkscape:export-filename="\\GALACTICFIRE\Beta\Home\Projects\GCodeToolbox\imgs\crash.png"
        inkscape:export-xdpi="79.610001"
        inkscape:export-ydpi="79.610001" />
@@ -425,22 +425,18 @@
          y="424.21289">nozzle radius</tspan></text>
     <text
        xml:space="preserve"
-       style="font-size:30.68319511px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans Bold"
-       x="181.99039"
-       y="123.05684"
+       style="font-size:19.63664246px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans Bold"
+       x="185.07993"
+       y="151.76114"
        id="text7570"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
-         id="tspan7572"
-         x="181.99039"
-         y="123.05684">3D Printing of</tspan><tspan
+         x="187.80296"
+         y="151.76114"
+         id="tspan7580">3D Printing of Multiple Complete Objects </tspan><tspan
          sodipodi:role="line"
-         x="186.24529"
-         y="161.41083"
-         id="tspan7580">Multiple Complete Objects </tspan><tspan
-         sodipodi:role="line"
-         x="181.99039"
-         y="199.76483"
+         x="185.07993"
+         y="176.30695"
          id="tspan7578">in One Printjob</tspan></text>
     <text
        xml:space="preserve"
