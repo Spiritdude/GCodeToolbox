@@ -102,10 +102,11 @@ which is ideal when a grid of test objects with different settings are made (e.g
 
 You can define a profile of your printer (default X=200, Y=200, Z=200 and margin=3), with e.g. "myprinter.conf":
 <pre>
-X: 150
-Y: 180
-Z: 120
-margin: 3
+# MyPrinter (all measurements in mm)
+X = 150
+Y = 180
+Z = 120
+margin = 3
 </pre>
    
 defines the build-volume, margin of the built-platform toward the pieces, all variables of .conf file are also available via command-line --printer[key]=[value] as well ([key] starts with uppercase letter), for example:
