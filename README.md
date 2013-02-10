@@ -138,7 +138,7 @@ defines the build-volume, margin of the built-platform toward the pieces, all va
 
 <h3>Collision Awareness</h3>
 
-Right now <tt>gctoolbox</tt> concatenates pieces so they are printed individually complete first (later version may include an option), which poses some danger that the nozzle crashes into existing already printed items:
+Right now <tt>gctoolbox</tt> concatenates pieces so they are printed individually complete first (later version may include an option to change this behaviour), which poses some danger that the extruder nozzle crashes into existing already printed items:
 
 <img src="imgs/crash.png">
 
