@@ -148,8 +148,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="1.3530036"
-     inkscape:cx="278.35788"
-     inkscape:cy="634.41545"
+     inkscape:cx="190.03587"
+     inkscape:cy="811.79857"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -503,12 +503,12 @@
     <text
        xml:space="preserve"
        style="font-size:12.25238228px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#ff0000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans Bold"
-       x="50.722805"
+       x="40.579159"
        y="255.89871"
        id="text7496"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
-         x="50.722805"
+         x="40.579159"
          y="255.89871"
          id="tspan7502"><tspan
            style="fill:#de00ff;fill-opacity:1"
@@ -557,16 +557,16 @@
     <text
        xml:space="preserve"
        style="font-size:19.63664246px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans Bold"
-       x="185.07993"
+       x="184.44777"
        y="175.76114"
        id="text7570"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
-         x="187.80298"
+         x="187.17082"
          y="175.76114"
          id="tspan7580">Multiple Complete Objects </tspan><tspan
          sodipodi:role="line"
-         x="185.07993"
+         x="184.44777"
          y="200.30695"
          id="tspan7578">in One Printjob</tspan></text>
     <text
@@ -602,24 +602,24 @@
     <text
        xml:space="preserve"
        style="font-size:13.7070961px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
-       x="134.48184"
+       x="135.18027"
        y="230.49857"
        id="text3841"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
          id="tspan3843"
-         x="134.48184"
+         x="135.18027"
          y="230.49857">to avoid collision</tspan></text>
     <text
        sodipodi:linespacing="125%"
        id="text3900"
        y="289.1683"
-       x="10.722805"
+       x="30.546318"
        style="font-size:12.25238228px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#ff0000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans Bold"
        xml:space="preserve"><tspan
          id="tspan3902"
          y="289.1683"
-         x="10.722805"
+         x="30.546318"
          sodipodi:role="line"><tspan
            id="tspan3940"
            style="fill:#000000;fill-opacity:1">( </tspan><tspan
@@ -639,11 +639,11 @@
        sodipodi:linespacing="125%"
        id="text3934"
        y="272.49857"
-       x="174.48184"
+       x="178.7244"
        style="font-size:13.7070961px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
        xml:space="preserve"><tspan
          y="272.49857"
-         x="174.48184"
+         x="178.7244"
          id="tspan3936"
          sodipodi:role="line">or</tspan></text>
     <rect
