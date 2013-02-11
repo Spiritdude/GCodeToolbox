@@ -127,17 +127,17 @@
     </clipPath>
     <clipPath
        clipPathUnits="userSpaceOnUse"
-       id="clipPath4524">
+       id="clipPath4626">
       <rect
-         inkscape:export-ydpi="79.610001"
-         inkscape:export-xdpi="79.610001"
-         inkscape:export-filename="\\GALACTICFIRE\Beta\Home\Projects\GCodeToolbox\imgs\crash.png"
-         y="107.23975"
-         x="-99.19043"
-         height="239.5518"
+         style="fill:#ffffff;fill-opacity:1;stroke:none"
+         id="rect4628"
          width="723.5152"
-         id="rect4526"
-         style="fill:#ffffff;fill-opacity:1;stroke:none" />
+         height="277.9234"
+         x="-99.19043"
+         y="68.868149"
+         inkscape:export-filename="\\GALACTICFIRE\Beta\Home\Projects\GCodeToolbox\imgs\crash.png"
+         inkscape:export-xdpi="79.610001"
+         inkscape:export-ydpi="79.610001" />
     </clipPath>
   </defs>
   <sodipodi:namedview
@@ -147,8 +147,8 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.60811965"
-     inkscape:cx="548.09848"
+     inkscape:zoom="1.7200221"
+     inkscape:cx="493.15943"
      inkscape:cy="1129.5271"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
@@ -1512,13 +1512,13 @@
        style="fill:#38ff00;fill-opacity:1;stroke:none"
        id="rect4432"
        width="108.57143"
-       height="59.734844"
+       height="21.91334"
        x="493.40039"
-       y="-69.372681" />
+       y="-31.551176" />
     <g
-       transform="translate(60,-318)"
+       transform="translate(62,-280)"
        id="g4434"
-       clip-path="url(#clipPath4524)">
+       clip-path="url(#clipPath4626)">
       <path
          inkscape:connector-curvature="0"
          id="path4436"
@@ -1623,7 +1623,7 @@
       </g>
     </g>
     <rect
-       y="-73.372681"
+       y="-35.372681"
        x="493.40039"
        height="3.9216084"
        width="29.502676"
