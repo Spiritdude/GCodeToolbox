@@ -160,6 +160,8 @@ Right now <tt>gctoolbox</tt> concatenates pieces so they are printed individuall
 <tt>gctoolbox</tt> prints out a warning if these conditions are not met, and increases objectSpacing so there is no collision; important is to set the headX & headY properly.
 By default headY = headX unless you define headY explicit as well. headZ defines the maxium objectZ to printed in this manner.
 
+At a later time mixed version might be considered e.g. rows with same temperature are printed "Simultaneous Objects" mode, compare <a href="tests/array/">this example</a>.
+
 <h3>Tests</h3>
 
 <pre>
