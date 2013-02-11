@@ -145,6 +145,12 @@ defines the build-volume, margin of the built-platform toward the pieces, all va
 
 <img src="imgs/sequences.png">
 
+Right now "Complete Objects" is the default output of con<b>cat</b>enating multiple objects; most slicers have "Simultaneous Object" sequence as default.
+When printing multiple objects with different print temperatures (e.g. for doing a <a href="tests/array/">test plate as illustrated</a>) then "Complete Objects" is the way to go,
+otherwise "Simultaneous Objects" should work.
+
+As of version 0.009 only "Complete Objects" is supported by the <b>cat</b> command.
+
 <h3>Collision Awareness</h3>
 
 Right now <tt>gctoolbox</tt> concatenates pieces so they are printed individually complete first (later version may include an option to change this behaviour), which poses some danger that the extruder nozzle crashes into existing already printed items:
