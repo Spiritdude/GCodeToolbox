@@ -403,7 +403,7 @@
        sodipodi:nodetypes="cc" />
     <rect
        y="542.18121"
-       x="201.62582"
+       x="195.62582"
        height="12.790533"
        width="73.254875"
        id="rect5399"
@@ -412,11 +412,11 @@
        sodipodi:linespacing="125%"
        id="text7368"
        y="552.21289"
-       x="203.9933"
+       x="197.9933"
        style="font-size:10px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#2100ba;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans Bold"
        xml:space="preserve"><tspan
          y="552.21289"
-         x="203.9933"
+         x="197.9933"
          id="tspan7370"
          sodipodi:role="line">objectSpacing</tspan></text>
     <rect
@@ -531,16 +531,16 @@
        height="10.688686"
        x="417.68097"
        y="376.50833"
-       transform="matrix(0.87480258,0,0,1.1269892,73.761757,-45.169839)" />
+       transform="matrix(0.87480258,0,0,1.1269892,57.761757,-45.169839)" />
     <text
        sodipodi:linespacing="125%"
        id="text3827"
        y="388.21289"
-       x="443.99329"
+       x="427.99329"
        style="font-size:10px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#2100ba;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans Bold"
        xml:space="preserve"><tspan
          y="388.21289"
-         x="443.99329"
+         x="427.99329"
          id="tspan3829"
          sodipodi:role="line">printerHeadX</tspan></text>
     <text
