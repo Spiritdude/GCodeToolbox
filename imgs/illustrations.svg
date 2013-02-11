@@ -147,9 +147,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.33825089"
-     inkscape:cx="428.39444"
-     inkscape:cy="956.66146"
+     inkscape:zoom="1.3530036"
+     inkscape:cx="278.35788"
+     inkscape:cy="634.41545"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -187,6 +187,12 @@
        width="723.5152"
        id="rect4504"
        style="fill:#ffffff;fill-opacity:1;stroke:none" />
+    <path
+       sodipodi:nodetypes="cccc"
+       inkscape:connector-curvature="0"
+       id="path4264"
+       d="m 674.21259,-244.78067 -697.569768,0 0,-25.71429 697.569768,0"
+       style="fill:#808080;fill-opacity:1;stroke:#000000;stroke-opacity:1" />
     <rect
        y="-378.20926"
        x="493.40039"
@@ -204,6 +210,12 @@
        inkscape:export-filename="\\GALACTICFIRE\Beta\Home\Projects\GCodeToolbox\imgs\collision.png"
        inkscape:export-xdpi="79.610001"
        inkscape:export-ydpi="79.610001" />
+    <path
+       sodipodi:nodetypes="cccc"
+       inkscape:connector-curvature="0"
+       id="path4290"
+       d="m 674.21259,495.21933 -697.569768,0 0,-25.71429 697.569768,0"
+       style="fill:#808080;fill-opacity:1;stroke:#000000;stroke-opacity:1" />
     <rect
        style="fill:#808080;fill-opacity:1;stroke:none"
        id="rect4625"
@@ -211,6 +223,12 @@
        height="276.74066"
        x="-24.418289"
        y="528.41467" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none"
+       d="m -25.129276,528.34287 0,277.16113 696.228766,0"
+       id="path4303"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccc" />
     <rect
        style="fill:#38ff00;fill-opacity:0.14619882000000001;stroke:#30ff00;opacity:1;stroke-opacity:1;stroke-width:2;stroke-miterlimit:4;stroke-dasharray:8,8;stroke-dashoffset:0"
        id="rect7566"
@@ -330,13 +348,6 @@
        id="path5316"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="cc" />
-    <rect
-       style="fill:#808080;fill-opacity:1;stroke:none"
-       id="rect6424"
-       width="697.56976"
-       height="25.714285"
-       x="-23.357143"
-       y="469.50504" />
     <rect
        style="fill:#38ff00;fill-opacity:1;stroke:none"
        id="rect6934"
@@ -1070,13 +1081,6 @@
          x="534.30237"
          id="tspan4123"
          sodipodi:role="line">hotend / head</tspan></text>
-    <rect
-       y="-270.49496"
-       x="-23.357143"
-       height="25.714285"
-       width="697.56976"
-       id="rect4149"
-       style="fill:#808080;fill-opacity:1;stroke:none" />
     <path
        sodipodi:nodetypes="cc"
        inkscape:connector-curvature="0"
@@ -1376,13 +1380,12 @@
        height="108.57143"
        x="493.40039"
        y="-118.20926" />
-    <rect
-       style="fill:#808080;fill-opacity:1;stroke:none"
+    <path
+       style="fill:#808080;fill-opacity:1;stroke:#000000;stroke-opacity:1"
+       d="m 674.21259,15.219328 -697.569768,0 0,-25.714285 697.569768,0"
        id="rect4388"
-       width="697.56976"
-       height="25.714285"
-       x="-23.357178"
-       y="-10.494957" />
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cccc" />
     <path
        style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m -22.85714,-4.78067 0,-78.85184"
