@@ -523,7 +523,7 @@
          sodipodi:role="line"
          id="tspan7576"
          x="187.67836"
-         y="882.58984">by Rene K. Mueller &lt;spiritdude@gmail.com&gt; for GCodeToolbox, Version 1.01, 2013/02/11, Creative Commons CC BY</tspan></text>
+         y="882.58984">by Rene K. Mueller &lt;spiritdude@gmail.com&gt; for GCodeToolbox, Version 1.02, 2013/02/11, Creative Commons CC BY</tspan></text>
     <rect
        style="fill:#afafaf;fill-opacity:1;stroke:none;filter:url(#filter3837)"
        id="rect3831"
@@ -914,5 +914,22 @@
          id="tspan5777"
          x="567.99329"
          y="760.21289">headY</tspan></text>
+    <path
+       sodipodi:nodetypes="cc"
+       inkscape:connector-curvature="0"
+       id="path5797"
+       d="m 215.08447,401.52986 33.38773,0"
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:url(#Arrow1Lstart);marker-end:url(#Arrow1Lend)" />
+    <text
+       xml:space="preserve"
+       style="font-size:10px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#2100ba;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans Bold"
+       x="203.9933"
+       y="392.21289"
+       id="text5799"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan5801"
+         x="203.9933"
+         y="392.21289">objectSpacing</tspan></text>
   </g>
 </svg>
