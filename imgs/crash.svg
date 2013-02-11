@@ -121,7 +121,7 @@
      inkscape:pageshadow="2"
      inkscape:zoom="0.86001106"
      inkscape:cx="492.70955"
-     inkscape:cy="338.55988"
+     inkscape:cy="431.58194"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -1012,5 +1012,16 @@
          x="593.8302"
          y="729.9574"
          id="tspan4119">direction</tspan></text>
+    <text
+       sodipodi:linespacing="125%"
+       id="text4121"
+       y="231.47279"
+       x="534.30237"
+       style="font-size:16.42910004px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       xml:space="preserve"><tspan
+         y="231.47279"
+         x="534.30237"
+         id="tspan4123"
+         sodipodi:role="line">hotend / head</tspan></text>
   </g>
 </svg>
