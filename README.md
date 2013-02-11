@@ -1,6 +1,6 @@
 <h1>GCodeToolbox<h1>
 
-<b>Version: 0.008 (ALPHA)</b>
+<b>Version: 0.009 (ALPHA)</b>
 
 GCodeToolbox (<tt>gctoolbox</tt>) is a command-line perl-script to manipulate .gcode files (for 3D printers & RepRaps) as created by slicers (like Slic3r or Skeinforge) from .stl files. 
 
@@ -12,6 +12,7 @@ The main aim of this package is to be able to
 
 <h2>History</h2>
 <ul>
+<li> 2013/02/11: 0.009: headX/Y/Z introduced, extruderDiameter abandoned 
 <li> 2013/02/11: 0.008: printerExtruderDiameter input, affects objectSpacing & slicer.skirt-distance (slic3r)
 <li> 2013/02/10: 0.007: conf and fileList support
 <li> 2013/02/09: 0.006: fanSpeed and temperature arguments possible, override gcode, proper filtering of object settings
@@ -31,7 +32,7 @@ which copies the <tt>gctoolbox</tt> to /usr/local/bin/ - that's all.
 
 <h2>Usage</h2>
 <pre>
-GCodeToolbox 0.008: gctoolbox [switches] [cmd] [file1]..[fileN]
+GCodeToolbox 0.009: gctoolbox [switches] [cmd] [file1]..[fileN]
 
         info [file1]...    provide info on .gcode files
         slice [file1]...   slice .stl files to .gcode
@@ -46,7 +47,9 @@ GCodeToolbox 0.008: gctoolbox [switches] [cmd] [file1]..[fileN]
         --printerY=y       define build depth (default: 200) [mm]
         --printerZ=z       define build height (default: 200) [mm]
         --printerMargin=m  define margin to perimeter of platform (default: 3) [mm]
-        --printerExtruderDiameter=d define extruder diameter (default: 16) [mm]
+        --printerHeadX=x   define head width (default: 16) [mm]
+        --printerHeadY=y   define head depth (default: 16) [mm]
+        --printerHeadZ=z   define head height (default: 50) [mm]
         --cols=c           define columns when concat(enating) (default none, auto-overflow) [mm]
         --objectSpacing=x  define distance between items when concat (default: 3) [mm]
         --fanSpeed=s       define fan-speed (s=0-255) (default none, defined in gcode)
@@ -126,7 +129,9 @@ X = 150
 Y = 180
 Z = 120
 margin = 3              
-extruderDiameter = 20     # -- important to set to avoid collision when objects are concat(enat)ed
+headX = 20     # -- important to set to avoid collision when objects are concat(enat)ed
+headY = 20     #    dito
+headZ = 50     # -- important, defines maxZ of an object to be printed in "complete object"-sequence (default)
 </pre>
    
 defines the build-volume, margin of the built-platform toward the pieces, all variables of .conf file are also available via command-line --printer[key]=[value] as well ([key] starts with uppercase letter), for example:
