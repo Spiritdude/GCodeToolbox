@@ -130,7 +130,7 @@ Y = 180
 Z = 120
 margin = 3              
 headX = 20     # -- important to set to avoid collision when objects are concat(enat)ed
-headY = 20     #    dito
+headY = 25     #    dito
 headZ = 50     # -- important, defines maxZ of an object to be printed in "complete object"-sequence (default)
 </pre>
    
