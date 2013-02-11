@@ -717,30 +717,11 @@
          x="131.88977"
          id="tspan5241"
          sodipodi:role="line">printerMargin</tspan></text>
-    <rect
-       y="694.18121"
-       x="-30.374184"
-       height="12.790533"
-       width="73.254875"
-       id="rect5395"
-       style="fill:#d1caca;fill-opacity:1;stroke:none;filter:url(#filter5391)"
-       transform="matrix(0.94071864,0,0,1,2.5420256,-6)" />
-    <text
-       xml:space="preserve"
-       style="font-size:10px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#2100ba;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans Bold"
-       x="-24.621902"
-       y="698.0672"
-       id="text5245"
-       sodipodi:linespacing="125%"><tspan
-         sodipodi:role="line"
-         id="tspan5247"
-         x="-24.621902"
-         y="698.0672">printerMargin</tspan></text>
     <path
        sodipodi:nodetypes="cc"
        inkscape:connector-curvature="0"
        id="path5249"
-       d="m -21.752753,709.66543 59.412656,0"
+       d="m -21.752753,681.66543 59.412656,0"
        style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:url(#Arrow1Lstart);marker-end:url(#Arrow1Lend)" />
     <path
        style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:url(#Arrow1Lstart);marker-end:url(#Arrow1Lend)"
@@ -754,6 +735,25 @@
        id="path7327"
        d="m 37.142857,695.39003 0,-299.02254"
        style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <rect
+       y="694.18121"
+       x="-30.374184"
+       height="12.790533"
+       width="73.254875"
+       id="rect5395"
+       style="fill:#d1caca;fill-opacity:1;stroke:none;filter:url(#filter5391)"
+       transform="matrix(0.94071864,0,0,1,2.5420256,-34)" />
+    <text
+       xml:space="preserve"
+       style="font-size:10px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#2100ba;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans Bold"
+       x="-24.621902"
+       y="670.0672"
+       id="text5245"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan5247"
+         x="-24.621902"
+         y="670.0672">printerMargin</tspan></text>
     <g
        transform="translate(210.99985,140)"
        id="g5304">
