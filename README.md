@@ -151,6 +151,8 @@ otherwise "Simultaneous Objects" should work.
 
 As of version 0.009 only "Complete Objects" is supported by the <b>cat</b> command.
 
+At a later time mixed version might be considered e.g. rows with same temperature are printed "Simultaneous Objects" mode, compare the <a href="tests/array/">test plate example</a>.
+
 <h3>Collision Awareness</h3>
 
 Right now <tt>gctoolbox</tt> concatenates pieces so they are printed individually complete first (later version may include an option to change this behaviour), which poses some danger that the extruder nozzle crashes into existing already printed items:
@@ -159,8 +161,6 @@ Right now <tt>gctoolbox</tt> concatenates pieces so they are printed individuall
 
 <tt>gctoolbox</tt> prints out a warning if these conditions are not met, and increases objectSpacing so there is no collision; important is to set the headX & headY properly.
 By default headY = headX unless you define headY explicit as well. headZ defines the maxium objectZ to printed in this manner.
-
-At a later time mixed version might be considered e.g. rows with same temperature are printed "Simultaneous Objects" mode, compare <a href="tests/array/">this example</a>.
 
 <h3>Tests</h3>
 
