@@ -142,7 +142,8 @@ Right now <tt>gctoolbox</tt> concatenates pieces so they are printed individuall
 
 <img src="imgs/crash.png">
 
-<tt>gctoolbox</tt> prints out a warning if these conditions are not met, and increases objectSpacing so there is no collision; important is to set the extruderDiameter (extruder radius x 2) properly.
+<tt>gctoolbox</tt> prints out a warning if these conditions are not met, and increases objectSpacing so there is no collision; important is to set the headX & headY properly.
+By default headY = headX unless you define headY explicit as well. headZ defines the maxium objectZ to printed in this manner.
 
 <h3>Tests</h3>
 
