@@ -157,7 +157,7 @@ At a later time mixed version might be considered e.g. rows with same temperatur
 
 Right now <tt>gctoolbox</tt> concatenates pieces so they are printed individually complete first (later version may include an option to change this behaviour), which poses some danger that the extruder nozzle crashes into existing already printed items:
 
-<img src="imgs/crash.png">
+<img src="imgs/collision.png">
 
 <tt>gctoolbox</tt> prints out a warning if these conditions are not met, and increases objectSpacing so there is no collision; important is to set the headX & headY properly.
 By default headY = headX unless you define headY explicit as well. headZ defines the maxium objectZ to printed in this manner.

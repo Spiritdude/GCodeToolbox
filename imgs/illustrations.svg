@@ -169,7 +169,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -201,7 +201,7 @@
        height="716.43164"
        x="-39.190407"
        y="116.35983"
-       inkscape:export-filename="\\GALACTICFIRE\Beta\Home\Projects\GCodeToolbox\imgs\crash.png"
+       inkscape:export-filename="\\GALACTICFIRE\Beta\Home\Projects\GCodeToolbox\imgs\collision.png"
        inkscape:export-xdpi="79.610001"
        inkscape:export-ydpi="79.610001" />
     <rect
