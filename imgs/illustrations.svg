@@ -1671,7 +1671,7 @@
          sodipodi:role="line"
          id="tspan4508"
          x="16.444132"
-         y="-429.21198">Simultaneously Sequence</tspan></text>
+         y="-429.21198">Simultaneously Objects</tspan></text>
     <text
        sodipodi:linespacing="125%"
        id="text4510"
@@ -1682,6 +1682,6 @@
          y="-169.21198"
          x="-3.5559082"
          id="tspan4512"
-         sodipodi:role="line">Complete Sequence</tspan></text>
+         sodipodi:role="line">Complete Objects</tspan></text>
   </g>
 </svg>

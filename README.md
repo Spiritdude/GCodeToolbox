@@ -141,6 +141,10 @@ defines the build-volume, margin of the built-platform toward the pieces, all va
 % gctoolbox --printerX=200 --printerY=180 --printerMargin=5 --printerExtruderDiameter=20 --objectSpacing=5 3x cube10mm.gcode > 3cubes.gcode
 </pre>
 
+<h3>Sequences</h3>
+
+<img src="imgs/sequences.png">
+
 <h3>Collision Awareness</h3>
 
 Right now <tt>gctoolbox</tt> concatenates pieces so they are printed individually complete first (later version may include an option to change this behaviour), which poses some danger that the extruder nozzle crashes into existing already printed items:
