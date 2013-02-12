@@ -5,8 +5,12 @@ SLICER = ../gctoolbox --slicer=slic3r slice # or simply 'slic3r', .stl -> .gcode
 
 all::	2cubes-concurrent.gcode 2cubes-complete.gcode \
       2cubes-concurrent-alt.gcode 2cubes-complete-alt.gcode \
-      21cubes.gcode 21cubes2.gcode 9cubes3x3.gcode mixed.gcode mixed2.gcode
+      21cubes.gcode 21cubes2.gcode 9cubes3x3.gcode mixed.gcode mixed2.gcode render
 	cd array && make 
+
+render:
+	../gctoolbox render *.gcode
+	cp *.png ../imgs/examples/
 
 2cubes-concurrent.gcode:: cube10mm.gcode
 	../gctoolbox cat 2x cube10mm.gcode > 2cubes-concurrent.gcode
@@ -47,5 +51,6 @@ mixed2.gcode:   cube10mm.gcode cubeFancy10mm.gcode cubeFancyX10mm.gcode inchAxis
 	$(SLICER) $<
 	
 clean::
-	rm -f *.gcode Thumbs.db
+	rm -f *.gcode *.png Thumbs.db
 	cd array; make clean
+

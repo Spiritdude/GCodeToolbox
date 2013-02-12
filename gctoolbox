@@ -4,10 +4,11 @@
 #
 # License: GPLv2
 #
-$VERSION = '0.010';
+$VERSION = '0.011';
 $APPNAME = 'GCodeToolbox';
 #
 # History:
+# 2013/02/12: 0.011: render cmd implemented, renders .gcode to .png
 # 2013/02/12: 0.010: rudimentary sequence 'concurrent' implemented (each slice per object) and default behaviour, --sequence=complete old behaviour
 # 2013/02/11: 0.009: headX/Y/Z introduced, extruderDiameter abandoned 
 # 2013/02/11: 0.008: printerExtruderDiameter input, affects objectSpacing & slicer.skirt-distance (slic3r)
@@ -25,6 +26,7 @@ $APPNAME = 'GCodeToolbox';
 
 use Math::Trig;
 use POSIX;
+use GD;
 
 my(%arg,%isFlag);
 
@@ -41,6 +43,10 @@ $arg{printerZ} = 200;
 $arg{printerMargin} = 3;
 $arg{printerHeadX} = $arg{printerHeadY} = 16;    # J-Head Dimensions
 $arg{printerHeadZ} = 50;                         # J-Head Height
+
+$arg{'render.view'} = 'top';
+$arg{'render.width'} = 800;
+$arg{'render.height'} = 800;
 
 confFile("$ENV{HOME}/.gctoolboxrc",silentFail=>1);
 
@@ -105,7 +111,7 @@ process($cmd,@f);
 sub process {
    my($cmd,@f) = @_;
 
-   print "=== $cmd on @f\n" if($verbose);
+   print STDERR "=== $cmd on @f\n" if($verbose);
 
    if($cmd eq 'cat'||$cmd eq 'concat') {
       concatObjects(@f);
@@ -118,8 +124,9 @@ sub process {
                push(@sargs,"--$1".(!$isFlag{$k}?"=".$arg{$k}:''));
             }
          }
-         print "=== slicing: $f (with $arg{slicer} @sargs)\n";
-         print "execute $arg{slicer} @sargs $f\n" if($verbose);
+         my $fo = $f; $fo =~ s/\.[^\.]+$/.gcode/;
+         print STDERR "=== slicing: $f (with $arg{slicer} @sargs) to $fo\n";
+         print STDERR "execute $arg{slicer} @sargs $f\n" if($verbose);
          system("$arg{slicer} @sargs '$f'");
       }
       
@@ -145,6 +152,19 @@ sub process {
             print "\n";
          }
       }
+   } elsif($cmd eq 'render') {
+      foreach my $f (@f) {
+         my($fo) = $f; $fo =~ s/\.[^\.]+$/.png/;
+         $fo = 'out.png' unless($fo);
+         print STDERR "=== render $f to $fo:\n";
+         my($i) = parseGCode($f);
+         if($fo ne $f) {
+            renderObject($i,$fo);
+         } else {
+            print STDERR "ERROR: strange filename $i, cannot derive a png-filename from it\n";
+         }
+      }
+      
    } else {
       print STDERR "ERROR: unknown command '$cmd'\n";
       help();
@@ -158,11 +178,15 @@ sub help {
       "\tinfo [file1]...    provide info on .gcode files",
       "\tslice [file1]...   slice .stl files to .gcode",
       "\tcat [file1]...     concat multiple .gcode files to stdout",
+      "\trender [file1]...  render multiple .gcode files to .png",
       "",
       "\t-h or --help       this help",
       "\t-v or --verbose=v  increase verbosity", 
+      "\t--output=file      output result (default: stdout)",
       "\t--slicer=cmd       define slicer (default: $arg{slicer})",
       "\t--slicer.[arg]=x   define slicer arguments passed on slicer (e.g. --slicer.skirts=0)",
+      #"\t--scad=cmd         define scad (default: $arg{scad})",
+      #"\t--scad.[arg]=x     define scad arguments passed on scad",
       "\t--sequence=type    define sequence type: { concurrent (default), complete }",
       "\t--printer=file     reference printer profile",
       "\t--printerX=x       define build width (default: $arg{printerX}) [mm]",
@@ -179,6 +203,7 @@ sub help {
       "\t--temperature=t    define extruder temperature (default none, defined in gcode)", 
       "\t--conf=file        configuration file, all command-line arguments (without '--'), one per line",
       "\t--fileList=file    file with list of files (one file per line)",
+      "\t--render.view=v    define render view (default: $arg{'render.view'}) { top, front, perspective}",
       ),"\n\n";
    exit 1;
 }
@@ -359,7 +384,7 @@ sub concatObjects {
    print "; created: ",prettyDate($t)," ($t)\n";
    print "; command: concatObjects(",join(",",@f),")\n";
    foreach (sort keys %arg) {
-      print ";    $_: $arg{$_}\n";
+      print "; $_: $arg{$_}\n";
    }
    
    print "; header-start; for all objects (might be redundent, but we ensure it starts properly)\n";
@@ -550,3 +575,128 @@ sub prettyDate {
    return sprintf("%04d/%02d/%02d %02d:%02d:%02d %s",$_[5]+1900,$_[4]+1,$_[3],$_[2],$_[1],$_[0],strftime('%Z',@_));
 }
 
+sub renderObject {
+   my($i,$fo) = @_;
+   my($w,$h);
+   my($f) = 4;    # -- zoom
+   my $m = 10;    # -- our margin
+   my($px,$py,$pz) = ($arg{printerX},$arg{printerY},$arg{printerZ});
+
+   $px = $i->{"commentInfo.printerX"} if($i->{"commentInfo.printerX"});
+   $py = $i->{"commentInfo.printerY"} if($i->{"commentInfo.printerY"});
+   $pz = $i->{"commentInfo.printerZ"} if($i->{"commentInfo.printerZ"});
+
+   if($arg{'render.view'} eq 'top') {
+      ($w,$h) = ($px*$f+2*$m,$py*$f+2*$m);
+   } elsif($arg{'render.view'} eq 'front') {
+      ($w,$h) = ($px*$f+2*$m,$pz*$f+2*$m);
+   } else {
+      ($w,$h) = ($px*$f+2*$m,$py*$f+2*$m);
+   }
+   my $im = GD::Image->new($w,$h,1);
+   my $bg = $im->colorAllocate(255,255,255);
+   my $be = $im->colorAllocate(128,128,128);
+   my $gr1 = $im->colorAllocate(140,140,140);
+   my $gr2 = $im->colorAllocate(160,160,160);
+   my $ex = $im->colorAllocate(0,255,0);
+   my $mv = $im->colorAllocate(0,0,200);
+   my $tx = $im->colorAllocate(255,255,255);
+   my $dk = $im->colorAllocate(80,80,80);
+   my(@post);
+   
+   $im->filledRectangle(0,0,$w-1,$h-1,$bg);
+   
+   if($arg{'render.view'} eq 'top') {
+      $im->filledRectangle($m,$m,$w-$m-1,$h-$m-1,$be);
+      for(my $y=0; $y<$h-2*$m; $y+=1*$f) {
+         my $c = $y%(10*$f)==0?$gr2:$gr1;
+         $im->line($m,$h-$m-$y,$w-$m-1,$h-$m-$y,$c);
+      }
+      for(my $x=0; $x<$w-2*$m; $x+=1*$f) {
+         my $c = $x%(10*$f)==0?$gr2:$gr1;
+         $im->line($m+$x,$m,$m+$x,$h-$m-1,$c);
+      }
+   } elsif($arg{'render.view'} eq 'front') {
+      $im->filledRectangle($m,$h-$m-1,$w-$m-1,$h-1,$c);
+   } else {
+      ;
+   }
+   if(1) {
+      my $n;
+      foreach (qw(filename printerX printerY printerZ printerMargin objectSpacing sequence)) {
+         my $v = $i->{"commentInfo.$_"}?$i->{"commentInfo.$_"}:($arg{$_}?$arg{$_}:$i->{$_});
+         push(@post,join("\t",$m*2,$m*1.5+$n*14,"$_: $v"));
+         $n++;
+      }
+   }
+   my(%pos,%lpos,$e,$lx,$ly,%lval);
+   foreach my $l (@{$i->{codeObject}}) {           # -- we quickly parse the .gcode, and extract the relevant data to visualize
+      next if(/^\s*;/);
+      my($e,%val,$k);
+      foreach (split(/\s+/,$l)) {
+         if(/G(\d+)/) {
+            my($n) = $1;
+            $d++ if($n==1);
+            
+         } elsif(/M(\d+)/) {
+            my($n) = $1;
+            $k = 'temp' if($n==104||$n==109);
+
+         } elsif(/S([\d\.]+)/) {
+            my($v) = $1;
+            $val{$k} = $v if($k);
+            
+         } elsif(/([XYZ])([\-\d\.]+)/) {
+            my($a,$v) = ($1,$2);
+            $pos{$a} = $v if($d);
+
+         } elsif(/E([\-\d\.]+)/) {
+            my($v) = $1;
+            $e++ if($v>0);
+         }
+      }
+      if(%pos&&$d) {
+         my($x,$y) = _3dto2d($i,$px,$py,$pz,$w,$h,$pos{X},$pos{Y},$pos{Z});
+         $im->setAntiAliased($e?$ex:$mv);
+         # $im->setThickness($e?2:1);     # -- thickness 2 + antialias == ugly
+         if(defined $lx&&defined $ly&&($lx!=$x||$ly!=$y)) {
+            $im->line($x,$y,$lx,$ly,gdAntiAliased);
+            print STDERR "$pos{X}, $pos{Y}, $pos{Z} -> $x,$y ($lx,$ly) $e\n" if($verbose>1);
+         }
+         if(defined $val{temp}&&$lval{temp}!=$val{temp}) {
+            push(@post,join("\t",$x+3,$y-3,"$val{temp}C"));
+            $lval{temp} = $val{temp};
+         }
+         $lx = $x, $ly = $y;
+         %lpos = %pos;
+      }
+   }
+   foreach(@post) {
+      my($x,$y,$s) = split(/\t/);
+      foreach (0..8) {
+         $im->string(gdSmallFont,$x+$_%3-1,$y+int($_/3)-1,$s,$dk);
+      }
+      $im->string(gdSmallFont,$x,$y,$s,$tx);
+   }
+   open(F,">$fo");
+   binmode F;
+   print F $im->png;
+   close(F);
+}
+
+sub _3dto2d {
+   my($i,$px,$py,$pz,$w,$h,$x,$y,$z) = @_;
+   my($xx,$yy);
+   my($m) = 10;
+   if($arg{'render.view'} eq 'top') {
+      $xx = $x/$px*($w-$m*2)+$m;
+      $yy = $h-($y/$py*($h-$m*2)+$m);
+   } elsif($arg{'render.view'} eq 'front') {
+      $xx = $x/$px*($w-$m*2)+$m;
+      $yy = $h-($z/$pz*($h-$m*2)+$m);
+   } else {
+      $xx = $x/$px*($w-$m*2)+$m+$y/$py*$w*.1;
+      $yy = $h-($z/$pz*($h-$m*2)+$m+$y/$py*$w*.3);
+   }
+   return($xx,$yy);
+}

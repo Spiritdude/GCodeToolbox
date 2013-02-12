@@ -12,6 +12,7 @@ The main aim of this package is to be able to
 
 <h2>History</h2>
 <ul>
+<li> 2013/02/12: 0.011: render cmd implemented, renders .gcode to .png
 <li> 2013/02/12: 0.010: rudimentary sequence 'concurrent' implemented (each slice per object) and default behaviour, --sequence=complete old behaviour
 <li> 2013/02/11: 0.009: headX/Y/Z introduced, extruderDiameter abandoned 
 <li> 2013/02/11: 0.008: printerExtruderDiameter input, affects objectSpacing & slicer.skirt-distance (slic3r)
@@ -33,14 +34,16 @@ which copies the <tt>gctoolbox</tt> to /usr/local/bin/ - that's all.
 
 <h2>Usage</h2>
 <pre>
-GCodeToolbox 0.010: gctoolbox [switches] [cmd] [file1]..[fileN]
+GCodeToolbox 0.011: gctoolbox [switches] [cmd] [file1]..[fileN]
 
 	info [file1]...    provide info on .gcode files
 	slice [file1]...   slice .stl files to .gcode
 	cat [file1]...     concat multiple .gcode files to stdout
+	render [file1]...  render multiple .gcode files to .png
 
 	-h or --help       this help
 	-v or --verbose=v  increase verbosity
+	--output=file      output result (default: stdout)
 	--slicer=cmd       define slicer (default: slic3r)
 	--slicer.[arg]=x   define slicer arguments passed on slicer (e.g. --slicer.skirts=0)
 	--sequence=type    define sequence type: { concurrent (default), complete }
@@ -58,6 +61,7 @@ GCodeToolbox 0.010: gctoolbox [switches] [cmd] [file1]..[fileN]
 	--temperature=t    define extruder temperature (default none, defined in gcode)
 	--conf=file        configuration file, all command-line arguments (without '--'), one per line
 	--fileList=file    file with list of files (one file per line)
+	--render.view=v    define render view (default: top) { top, front, perspective}
 
 </pre>
 
@@ -79,7 +83,7 @@ prints out some information about the actual gcode
 </pre>
 creates cube10mm.gcode, default slicer is Slic3r, and arguments for the slicer can be given by --slicer.[arg]=[value].
 <pre>
-% gctoolbox --slicer=skeinforge slice cube10mm.stl
+% gctoolbox --slicer=anotherSlicer slice cube10mm.stl
 </pre>
 use another slicer backend, it has to create .gcode
 
@@ -165,6 +169,15 @@ When using --sequence=complete the objects are printed individually complete fir
 
 <tt>gctoolbox</tt> prints out a warning if these conditions are not met, and increases objectSpacing so there is no collision; important is to set the headX & headY properly.
 By default headY = headX unless you define headY explicit as well. headZ defines the maxium objectZ to printed in this manner.
+
+<h2>Render</h2>
+
+You can render any .gcode to .png like this:
+<pre>
+% gctoolbox render mixed.gcode
+</pre>
+
+<img src="imgs/examples/mixed.png">
 
 <h3>Tests</h3>
 

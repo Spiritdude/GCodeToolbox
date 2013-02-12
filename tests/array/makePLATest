@@ -4,12 +4,13 @@
 #
 # License: GPLv2
 #
-$VERSION = '0.001';
+$VERSION = '0.002';
 $APPNAME = 'makePLATest';
 #
 # History:
-# 2013/02/09: make it fit on 200x200 nicely
-# 2013/02/08: first version
+# 2013/02/12: 0.002: --first-layer-temperature is not adjusted when --temperature is defined in slic3r
+# 2013/02/09: 0.001: make it fit on 200x200 nicely
+# 2013/02/08: 0.001: first version
 
 for(my $t=190; $t<=225; $t+=5) {          # 225-190=35/5+1 = 8 steps
    for(my $if=30; $if<=100; $if+=10) {    # 100-30=70/10+1 = 8 steps (one row)
@@ -18,7 +19,7 @@ for(my $t=190; $t<=225; $t+=5) {          # 225-190=35/5+1 = 8 steps
       my($f) = "pla-cube-$t-$if.gcode";
       unless(-f $f) {
          print "slicing to $f\n";
-         `../../gctoolbox --slicer.skirt-distance=4 --slicer.fill-density=$if_ --slicer.temperature=$t --slicer.o=$f slice ../cube10mm.stl`;
+         `../../gctoolbox --slicer.skirt-distance=4 --slicer.fill-density=$if_ --slicer.temperature=$t --slicer.first-layer-temperature=$t --slicer.o=$f slice ../cube10mm.stl`;
       }
    }
 }

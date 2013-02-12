@@ -8,7 +8,9 @@ Once you ran <tt>make</tt> you get:
 
 It enables you to profile your filament very precisely with <b>one print</b> only.
 
-<img src="../../imgs/PLAPlate200x200.png">
+<img src="ABSPlate200x200.png">
+
+<img src="PLAPlate200x200.png">
 
 <h3>References</h3>
 <ul>
