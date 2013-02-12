@@ -86,7 +86,7 @@ use another slicer backend, it has to create .gcode
 Concatenating (short 'cat', like the UNIX command 'cat') is the main feature of GCodeToolbox.
 
 <pre>
-% gctoolbox cat cube10mm.gcode inchaxis.gcode > mixed.gcode
+% gctoolbox cat cube10mm.gcode inchAxis.gcode > mixed.gcode
 </pre>
 concatenate several gcode files into one gcode.
 
@@ -95,9 +95,9 @@ concatenate several gcode files into one gcode.
 You can also define a multiplication:
 
 <pre>
-% gctoolbox cat 10x cube10mm.gcode 3x inchaxis.gcode > mixed2.gcode
+% gctoolbox cat 10x cube10mm.gcode 3x inchAxis.gcode > mixed2.gcode
 </pre>
-which concatenates 10 times cube10mm's and 3 times inchaxis's.
+which concatenates 10 times cube10mm's and 3 times inchAxis's.
 
 By default pieces are arranged left-to-right and when it overflows they are a placed further on the platform, but you can force wrapping:
 <pre>
@@ -115,8 +115,8 @@ whereas <b>myfiles.list</b> is
 # my objects
 cube10mm.gcode
 cube10mm.gcode
-inchaxis.gcode
-inchaxis.gcode
+inchAxis.gcode
+inchAxis.gcode
 steps5mm.gcode
 steps5mm.gcode
 </pre>
