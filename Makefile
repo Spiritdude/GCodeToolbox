@@ -14,6 +14,7 @@ tests::
 	cd tests; make
 
 clean::
+	rm -f Thumbs.db
 	cd tests; make clean
 
 # --- developers only below

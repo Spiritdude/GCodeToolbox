@@ -31,7 +31,7 @@ The main aim of this package is to be able to
 % make install
 </pre>
 
-If you want <b>render</b> command to work (.gcode to .png), install GD.pm too:
+If you want <b>render</b> command to work (.gcode to .png) too, install GD.pm too:
 <pre>
 % sudo apt-get install libgd-gd2-perl
 </pre>
@@ -39,7 +39,6 @@ or
 <pre>
 % sudo cpan GD
 </pre>
-as well.
 
 <h2>Usage</h2>
 <pre>

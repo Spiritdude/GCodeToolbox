@@ -124,7 +124,7 @@ sub process {
             }
          }
          my $fo = $f; $fo =~ s/\.[^\.]+$/.gcode/;
-         print STDERR "=== slicing: $f (with $arg{slicer} @sargs) to $fo\n";
+         print STDERR "=== slicing: $f (with $arg{slicer} @sargs)\n";
          print STDERR "execute $arg{slicer} @sargs $f\n" if($verbose);
          system("$arg{slicer} @sargs '$f'");
       }
@@ -162,7 +162,7 @@ sub process {
          if($fo ne $f) {
             renderObject($i,$fo);
          } else {
-            print STDERR "ERROR: strange filename $i, cannot derive a png-filename from it\n";
+            print STDERR "ERROR: strange filename $f, cannot derive a png-filename from it\n";
          }
       }
       
