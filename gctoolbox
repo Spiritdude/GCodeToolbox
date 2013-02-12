@@ -609,12 +609,18 @@ sub renderObject {
    
    if($arg{'render.view'} eq 'top') {
       $im->filledRectangle($m,$m,$w-$m-1,$h-$m-1,$be);
+      my $c = $gr1;
       for(my $y=0; $y<$h-2*$m; $y+=1*$f) {
-         my $c = $y%(10*$f)==0?$gr2:$gr1;
          $im->line($m,$h-$m-$y,$w-$m-1,$h-$m-$y,$c);
       }
       for(my $x=0; $x<$w-2*$m; $x+=1*$f) {
-         my $c = $x%(10*$f)==0?$gr2:$gr1;
+         $im->line($m+$x,$m,$m+$x,$h-$m-1,$c);
+      }
+      $c = $gr2;
+      for(my $y=0; $y<$h-2*$m; $y+=10*$f) {
+         $im->line($m,$h-$m-$y,$w-$m-1,$h-$m-$y,$c);
+      }
+      for(my $x=0; $x<$w-2*$m; $x+=10*$f) {
          $im->line($m+$x,$m,$m+$x,$h-$m-1,$c);
       }
    } elsif($arg{'render.view'} eq 'front') {
@@ -661,8 +667,15 @@ sub renderObject {
          $im->setAntiAliased($e?$ex:$mv);
          # $im->setThickness($e?2:1);     # -- thickness 2 + antialias == ugly
          if(defined $lx&&defined $ly&&($lx!=$x||$ly!=$y)) {
-            $im->line($x,$y,$lx,$ly,gdAntiAliased);
-            print STDERR "$pos{X}, $pos{Y}, $pos{Z} -> $x,$y ($lx,$ly) $e\n" if($verbose>1);
+            if(0) {
+               foreach (0..8) {
+                  my $xoff = ($_%3)-1; my $yoff = int($_/3)-1;
+                  $im->line($x+$xoff,$y+$yoff,$lx+$xoff,$ly+$yoff,gdAntiAliased);
+               }
+            } else {
+               $im->line($x,$y,$lx,$ly,gdAntiAliased);
+            }
+            print STDERR "$pos{X},$pos{Y},$pos{Z} -> $x,$y ($lx,$ly) $e\n" if($verbose>1);
          }
          if(defined $val{temp}&&$lval{temp}!=$val{temp}) {
             push(@post,join("\t",$x+3,$y-3,"$val{temp}C"));
