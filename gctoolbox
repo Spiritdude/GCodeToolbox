@@ -203,7 +203,7 @@ sub help {
       "\t--temperature=t    define extruder temperature (default none, defined in gcode)", 
       "\t--conf=file        configuration file, all command-line arguments (without '--'), one per line",
       "\t--fileList=file    file with list of files (one file per line)",
-      "\t--render.view=v    define render view (default: $arg{'render.view'}) { top, front, perspective}",
+      "\t--render.view=v    define render view (default: $arg{'render.view'}) { top, front }",
       ),"\n\n";
    exit 1;
 }

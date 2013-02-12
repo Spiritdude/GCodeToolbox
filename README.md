@@ -61,7 +61,7 @@ GCodeToolbox 0.011: gctoolbox [switches] [cmd] [file1]..[fileN]
 	--temperature=t    define extruder temperature (default none, defined in gcode)
 	--conf=file        configuration file, all command-line arguments (without '--'), one per line
 	--fileList=file    file with list of files (one file per line)
-	--render.view=v    define render view (default: top) { top, front, perspective}
+	--render.view=v    define render view (default: top) { top, front }
 
 </pre>
 
