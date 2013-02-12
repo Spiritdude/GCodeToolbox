@@ -151,7 +151,7 @@ There are two modes available (via --sequence=s) when con<b>cat</b>enating:
 <li><b>concurrent</b> (default): a layer of all objects are printed together; hardware settings like temperature cannot be changed (would slow down printing immensely).
 <li><b>complete</b>: each object is printed complete before moving the next object, it allows to print objects with different temperatures (e.g. profiling printing material like PLA or ABS) like
 these <a href="tests/array/">test plates (ABS & PLA)</a>, yet 
-
+</ul>
 
 Since version 0.010 --sequence=concurrent is default, and --sequence=complete is available optionally (prior 0.010 --sequence=complete was default).
 
