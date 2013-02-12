@@ -4,10 +4,11 @@
 #
 # License: GPLv2
 #
-$VERSION = '0.009';
+$VERSION = '0.010';
 $APPNAME = 'GCodeToolbox';
 #
 # History:
+# 2013/02/12: 0.010: rudimentary sequence 'concurrent' implemented (each slice per object) and default behaviour, --sequence=complete old behaviour
 # 2013/02/11: 0.009: headX/Y/Z introduced, extruderDiameter abandoned 
 # 2013/02/11: 0.008: printerExtruderDiameter input, affects objectSpacing & slicer.skirt-distance (slic3r)
 # 2013/02/10: 0.007: conf and fileList support
@@ -16,12 +17,16 @@ $APPNAME = 'GCodeToolbox';
 # 2013/02/09: 0.004: proper movement at wrapping at concatenating (inserting G1 moves)
 # 2013/02/09: 0.003: optional left-to-right to right-to-left swinging
 # 2013/02/09: 0.002: passing slicer arguments via --slicer.[key]=[value]
-# 2013/02/08: 0.001: start, info and concat works
+# 2013/02/08: 0.001: start coding, first version, info and concat works
+#
+# Todo/Ideas:
+# -print: send .gcode (and perhaps .scad, .stl) to the printer
+# -render: render .gcode (and perhaps .scad, .stl) to .png
 
 use Math::Trig;
 use POSIX;
 
-my(%arg);
+my(%arg,%isFlag);
 
 my $cmd;
 my $multiply = 1;
@@ -29,7 +34,7 @@ my $multiply = 1;
 # -- defaults
 $arg{objectSpacing} = 3;
 $arg{slicer} = 'slic3r';
-
+$arg{sequence} = 'concurrent';       # -- or 'complete'
 $arg{printerX} = 200;
 $arg{printerY} = 200;
 $arg{printerZ} = 200;
@@ -37,9 +42,11 @@ $arg{printerMargin} = 3;
 $arg{printerHeadX} = $arg{printerHeadY} = 16;    # J-Head Dimensions
 $arg{printerHeadZ} = 50;                         # J-Head Height
 
+confFile("$ENV{HOME}/.gctoolboxrc",silentFail=>1);
+
 foreach(@ARGV) {
    $arg{$1} = $2, next if(/^\-\-([^\s=]+)=(\S+)/);
-   $arg{$1}++, next if(/^\-\-([^\s=]+)/||/^\-(\S+)/);
+   $isFlag{$1}++, $arg{$1}++, next if(/^\-\-([^\s=]+)/||/^\-(\S+)/);
    $cmd = $_, next unless($cmd);
    $multiply = $1, next if(/^(\d+)x$/);
    if(-e $_) {
@@ -53,19 +60,7 @@ foreach(@ARGV) {
    }
 }
 
-if($arg{conf}&&open(F,$arg{conf})) {
-   print STDERR "configuration $arg{conf}\n";
-   while(<F>) {
-      chop;
-      next if(/^\s*#/);
-      s/#.*$//;
-      if(/^\s*([^\s:=]+)\s*[:=]\s*(\S.+)\s*$/) {
-         my($k,$v) = ($1,$2);
-         $arg{$k} = $v;
-      } 
-   }
-   close(F);
-}
+confFile($arg{conf}) if($arg{conf});
 
 if($arg{fileList}&&open(F,$arg{fileList})) {
    print STDERR "fileList $arg{fileList}\n";
@@ -76,6 +71,7 @@ if($arg{fileList}&&open(F,$arg{fileList})) {
       s/\s*$//;   # -- remove trailing spaces
       next if(/^\s*$/); # -- ignore empty lines
       if(-e $_) {
+         print STDERR "\t'$_' added\n" if($verbose);
          push(@f,$_);
       } else {
          print STDERR "ERROR: file '$_' listed, but doesn't exist, disregarded\n";
@@ -94,14 +90,16 @@ if($arg{printer}&&open(F,$arg{printer})) {
          my($k,$v) = ($1,$2);
          $k =~ s/(.)/uc $1/e;
          $arg{"printer$k"} = $v;
+         print STDERR "\tprinter$k = '$v'\n" if($verbose);
       } 
    }
    close(F);
 }
 
-my $verbose = $arg{v};
+my $verbose = $arg{v};     # -- old habit $verbose main variable
 
 help() if($#f<0); # -- nothing to do
+
 process($cmd,@f);
 
 sub process {
@@ -114,13 +112,15 @@ sub process {
    
    } elsif($cmd eq 'slice') {
       foreach my $f (@f) {
-         print "=== slicing: $f (with $arg{slicer})\n";
          my(@sargs);
          foreach my $k (sort keys %arg) {
-            push(@sargs,"--$1=".$arg{$k}) if($k=~/^slicer\.(\S+)/);
+            if($k=~/^slicer\.(\S+)/) {
+               push(@sargs,"--$1".(!$isFlag{$k}?"=".$arg{$k}:''));
+            }
          }
+         print "=== slicing: $f (with $arg{slicer} @sargs)\n";
          print "execute $arg{slicer} @sargs $f\n" if($verbose);
-         print `$arg{slicer} @sargs $f`;
+         system("$arg{slicer} @sargs '$f'");
       }
       
    } elsif($cmd eq 'info') {
@@ -132,7 +132,12 @@ sub process {
             #print sprintf("  %40s: $i->{$k}",$k);
             print "\t$k: ";
             if(ref $i->{$k} eq 'ARRAY') {
-               print "array: ",@{$i->{$k}}+1," entries";
+               print "array: ",$#{$i->{$k}}+1," entries";
+               if(@{$i->{$k}}<30) {
+                  print ": [ ";
+                  print join(", ",@{$i->{$k}});
+                  print " ]";
+               }
             } else {
                print $i->{$k};
                print " ".$i->{"$k.unit"} if($i->{"$k.unit"});
@@ -158,6 +163,7 @@ sub help {
       "\t-v or --verbose=v  increase verbosity", 
       "\t--slicer=cmd       define slicer (default: $arg{slicer})",
       "\t--slicer.[arg]=x   define slicer arguments passed on slicer (e.g. --slicer.skirts=0)",
+      "\t--sequence=type    define sequence type: { concurrent (default), complete }",
       "\t--printer=file     reference printer profile",
       "\t--printerX=x       define build width (default: $arg{printerX}) [mm]",
       "\t--printerY=y       define build depth (default: $arg{printerY}) [mm]",
@@ -176,6 +182,27 @@ sub help {
       ),"\n\n";
    exit 1;
 }
+
+sub confFile {
+   my($cf,%a) = @_;
+   if(open(F,$cf)) {
+      print STDERR "configuration $cf\n";
+      while(<F>) {
+         chop;
+         next if(/^\s*#/);
+         s/#.*$//;
+         if(/^\s*([^\s:=]+)\s*[:=]\s*(\S.+)\s*$/) {
+            my($k,$v) = ($1,$2);
+            $arg{$k} = $v;
+            print STDERR "\t$k = '$v'\n" if($verbose);
+         } 
+      }
+      close(F);
+   } else {
+      print STDERR "ERROR: $cf not found for configuration\n" unless($a{silentFail});
+   }
+}
+
 
 sub parseGCode {
    my($f) = @_;
@@ -239,6 +266,7 @@ sub parseGCode {
             $g{$f.'Count'}++;
             $h{$a.'Position'} = $v;
             $h{object} = 1 if($a eq 'Z'&&$v==0);
+            $h{indexZ} = $v if($a eq 'Z');
          
          } elsif(/F([\-\d\.]+)/) {
             my($v) = $1;
@@ -267,19 +295,33 @@ sub parseGCode {
          }
       }
 
+      push(@{$g{codeRaw}},$l);
+
       $h{ignore} = 0, next if($h{ignore});   # -- ignore command (e.g. G28 = homing)
 
       if($h{object}==0) {
          ;  # -- head
       } elsif($h{object}==1) {
+
          push(@{$g{codeObject}},$l);
+
+         if(defined $h{indexZ}) {            # -- we store codeObjectZIndex so we can find that layer/slice quick 
+                                             #      @{$g{codeObject}}[@{$g{codeObjectZIndex}}[z]] is code start of layer z
+            #if(defined @{$g{codeObjectZIndex}}[$h{layer}]) {
+            #   print STDERR "WARNING: multiple z-maneuvers to $h{indexZ} in this object\n";
+            #} else {
+               @{$g{codeObjectZIndex}}[$h{layer}] = $#{$g{codeObject}};
+            #}
+            $h{indexZ} = undef;
+            $h{layer}++;
+         }
       } else {
          ;  # -- tail
       }
-      push(@{$g{codeRaw}},$l);
    }
    close(F);
 
+   $g{layersZ} = $h{layer};
    $g{objectX} = $g{objectXMax} - $g{objectXMin};
    $g{objectY} = $g{objectYMax} - $g{objectYMin};
    $g{objectZ} = $g{objectZMax} - $g{objectZMin};
@@ -293,28 +335,26 @@ sub concatObjects {
    my($n,$xdir);
    my($t) = time();
    
-   $xoff = $arg{printerMargin};
-   $yoff = $arg{printerMargin};
-   $xdir = 1;
-
    my($skd) = $arg{"commentInfo.skirt-distance"};
    $skd = 6 unless($skd);
 
    $arg{objectSpacingX} = $arg{objectSpacing} unless(defined $arg{objectSpacingX});
    $arg{objectSpacingY} = $arg{objectSpacing} unless(defined $arg{objectSpacingY});
    
-   if(int($arg{printerHeadX}/2+0.5)+2>$skd+$arg{objectSpacingX}) {
-      print STDERR "WARNING: printerHeadX ($arg{printerHeadX})/2 + 2 >= skirt-distance ($skd) + objectSpacingX ($arg{objectSpacingX})\n";
-      $arg{objectSpacingX} = int($arg{printerHeadX}/2+0.5)+2-$skd;
-      print STDERR "         objectSpacingX increased to $arg{objectSpacingX} to avoid collision\n";
+   unless($arg{sequence}eq'concurrent') {
+      if(int($arg{printerHeadX}/2+0.5)+2>$skd+$arg{objectSpacingX}) {
+         print STDERR "WARNING: printerHeadX ($arg{printerHeadX})/2 + 2 >= skirt-distance ($skd) + objectSpacingX ($arg{objectSpacingX})\n";
+         $arg{objectSpacingX} = int($arg{printerHeadX}/2+0.5)+2-$skd;
+         print STDERR "         objectSpacingX increased to $arg{objectSpacingX} to avoid collision\n";
+      }
+   
+      if(int($arg{printerHeadY}/2+0.5)+2>$skd+$arg{objectSpacingY}) {
+         print STDERR "WARNING: printerHeadY ($arg{printerHeadY})/2 + 2 >= skirt-distance ($skd) + objectSpacingY ($arg{objectSpacingY})\n";
+         $arg{objectSpacingY} = int($arg{printerHeadX}/2+0.5)+2-$skd;
+         print STDERR "         objectSpacingY increased to $arg{objectSpacingY} to avoid collision\n";
+      }
    }
-
-   if(int($arg{printerHeadY}/2+0.5)+2>$skd+$arg{objectSpacingY}) {
-      print STDERR "WARNING: printerHeadY ($arg{printerHeadY})/2 + 2 >= skirt-distance ($skd) + objectSpacingY ($arg{objectSpacingY})\n";
-      $arg{objectSpacingY} = int($arg{printerHeadX}/2+0.5)+2-$skd;
-      print STDERR "         objectSpacingY increased to $arg{objectSpacingY} to avoid collision\n";
-   }
-
+   
    print "; generated by $APPNAME $VERSION\n";
    print "; created: ",prettyDate($t)," ($t)\n";
    print "; command: concatObjects(",join(",",@f),")\n";
@@ -336,65 +376,94 @@ sub concatObjects {
       "; header-end"
       ),"\n";
       
-   foreach my $f (@f) {
-      my $wrapping;
+   foreach my $f (@f) {          # -- read all ahead
+      my $i;
+      push(@o,$i=parseGCode($f));
+      $h{layersZMax} = $i->{layersZ} if($h{layersZMax}<$i->{layersZ});
+   }
+   my $sn = 1;
+   $sn = $h{layersZMax} if($arg{sequence} eq 'concurrent');
+
+   foreach my $s (0..($sn-1)) {
+      $xoff = $arg{printerMargin};
+      $yoff = $arg{printerMargin};
+      $xdir = 1;
+      $ymax = $zmax = 0; 
       
-      my($i) = parseGCode($f);
-      
-      if($xdir<0) {
-         $xoff += $xdir*($i->{objectX}+$arg{objectSpacing});
-      }
-      $n++;
-      if($xdir>0) {
-         if($xoff+$i->{objectX}+$arg{printerMargin}>=$arg{printerX}||(defined $arg{cols}&&$n>1&&($n-1)%$arg{cols}==0)) {  
-            if($arg{swinging}) {     # --- swinging left-to-right and right-to-left
-               $xoff = $arg{printerX}-($arg{printerMargin}+$i->{objectX});
-               $xdir *= -1;
-            } else {
-               $xoff = $arg{printerMargin};
+      foreach my $n (0..$#o) {          # -- we walk through all
+         my $wrapping;
+         my $i = $o[$n];
+         
+         if($xdir<0) {
+            $xoff += $xdir*($i->{objectX}+$arg{objectSpacing});
+         }
+         if($xdir>0) {
+            if($xoff+$i->{objectX}+$arg{printerMargin}>=$arg{printerX}||(defined $arg{cols}&&$n>0&&$n%$arg{cols}==0)) {  
+               if($arg{swinging}) {     # --- swinging left-to-right and right-to-left
+                  $xoff = $arg{printerX}-($arg{printerMargin}+$i->{objectX});
+                  $xdir *= -1;
+               } else {
+                  $xoff = $arg{printerMargin};
+               }
+               $yoff = $ymax+$arg{objectSpacingY};
+               #print STDERR "wrapping\n";
+               unless($arg{sequence}eq'concurrent') {
+                  print "G1 Y$yoff ; wrapping\n";    # -- let's make sure we don't run into already printed objects
+                  print "G1 X$xoff\n";
+               }
+               $wrapping++;
             }
-            $yoff = $ymax+$arg{objectSpacingY};
-            #print STDERR "wrapping\n";
-            print "G1 Y$yoff ; wrapping\n";    # -- let's make sure we don't run into already printed objects
-            print "G1 X$xoff\n";
-            $wrapping++;
+         } else {
+            if($xoff<=0||(defined $arg{cols}&&$n>0&&$n%$arg{cols}==0)) {  
+               $xoff = $arg{printerMargin};
+               $yoff = $ymax+$arg{objectSpacingY};
+               $xdir *= -1;
+               #print STDERR "wrapping\n";
+               unless($arg{sequence}eq'concurrent') {
+                  print "G1 Y$yoff ; wrapping\n";    # -- let's make sure we don't run into already printed objects
+                  print "G1 X$xoff\n";
+               }
+               $wrapping++;
+            }
          }
-      } else {
-         if($xoff<=0||(defined $arg{cols}&&$n>1&&($n-1)%$arg{cols}==0)) {  
-            $xoff = $arg{printerMargin};
-            $yoff = $ymax+$arg{objectSpacingY};
-            $xdir *= -1;
-            #print STDERR "wrapping\n";
-            print "G1 Y$yoff ; wrapping\n";    # -- let's make sure we don't run into already printed objects
-            print "G1 X$xoff\n";
-            $wrapping++;
+         if($yoff+$i->{objectY}+$arg{printerMargin}>=$arg{printerY}) {
+            print STDERR "ERROR: object #",($n+1),", $i->{filename} doesn't fit on plate anymore ($arg{printerX}x$arg{printerY}), disregarded\n" 
+               if($s==0);
+            next;
          }
-      }
-      if($yoff+$i->{objectY}+$arg{printerMargin}>=$arg{printerY}) {
-         print STDERR "ERROR: object #$n, $f doesn't fit on plate anymore ($arg{printerX}x$arg{printerY}), disregarded\n";
-         next;
-      }
-      if($i->{objectZ}>$arg{printerHeadZ}) {
-         print STDERR "ERROR: object #$n, $f has too high ($i->{objectZ}) as it likely will collide with extruder since head is $arg{printerHeadZ} high, object printing disregarded\n";
-         next;
-      }
-      print STDERR "place $f (#$n of ",($#f+1),") $i->{objectX}x$i->{objectY}+$xoff+$yoff (",($xdir>0?'left-to-right':'right-to-left'),")\n";
-
-      unless($wrapped) {
-         print "G1 X$xoff ; move away from printed object\n";
-         print "G1 Y$yoff ; to next origin of next object\n";
-      }
-      reoriginObject($i,$xoff,$yoff,'keep');
-      print "; start of $f (#$n of ",($#f+1),")\n";
-
-      $zmax = $i->{objectZ} if($zmax<$i->{objectZ});
-
-      printObject($i);
-      print "; end of $f (#$n of ",($#f+1),")\n";
-      
-      $ymax = $yoff+$i->{objectY} if($ymax<$yoff+$i->{objectY});
-      if($xdir>0) { 
-         $xoff += $xdir*($i->{objectX}+$arg{objectSpacingX});
+         if($i->{objectZ}>$arg{printerHeadZ}) {
+            print STDERR "ERROR: object #",($n+1),", $i->{filename} has too high ($i->{objectZ}) as it likely will collide with extruder since head is $arg{printerHeadZ} high, object printing disregarded\n" 
+               if($s==0);
+            next;
+         }
+   
+         unless($wrapped) {
+            unless($arg{sequence}eq'concurrent') {
+               print "G1 X$xoff ; move away from printed object\n";
+               print "G1 Y$yoff ; to next origin of next object\n";
+            }
+         }
+         if($s==0) {
+            print STDERR "place $i->{filename} (#",($n+1)," of ",($#f+1),") $i->{objectX}x$i->{objectY}+$xoff+$yoff (",($xdir>0?'left-to-right':'right-to-left'),")\n";
+            reoriginObject($i,$xoff,$yoff,'keep');       # -- do it once ...
+         }
+   
+         $zmax = $i->{objectZ} if($zmax<$i->{objectZ});
+   
+         if($arg{sequence}eq'concurrent') {
+            print "; layer-start #",($s+1)," (of $sn) of $i->{filename} (#",($n+1)," of ",($#f+1),")\n";
+            printObjectSlice($i,$s);
+            print "; layer-end #",($s+1)," (of $sn) of $i->{filename} (#",($n+1)," of ",($#f+1),")\n";
+         } else {
+            print "; start of $i->{filename} (#",($n+1)," of ",($#f+1),")\n";
+            printObject($i);
+            print "; end of $i->{filename} (#",($n+1)," of ",($#f+1),")\n";
+         }
+         
+         $ymax = $yoff+$i->{objectY} if($ymax<$yoff+$i->{objectY});
+         if($xdir>0) { 
+            $xoff += $xdir*($i->{objectX}+$arg{objectSpacingX});
+         }
       }
    }
    $zmax += 3;    # -- give extra 3mm to be sure
@@ -422,10 +491,9 @@ sub reoriginObject {
             my($a,$v) = ($1,$2);
             my($fmin) = "object".$a."Min";
             my($fmax) = "object".$a."Max";
-            $v = $v-$i->{$fmin};
-            if($x ne 'keep') { $v += $x if($a eq 'X'); }
-            if($y ne 'keep') { $v += $y if($a eq 'Y'); }
-            if($z ne 'keep') { $v += $z if($a eq 'Z'); }
+            if($x ne 'keep') { $v = $v-$i->{$fmin}, $v += $x if($a eq 'X'); }
+            if($y ne 'keep') { $v = $v-$i->{$fmin}, $v += $y if($a eq 'Y'); }
+            if($z ne 'keep') { $v = $v-$i->{$fmin}, $v += $z if($a eq 'Z'); }
             push(@dn,$a.$v);
          } else {
             push(@dn,$_);
@@ -443,6 +511,34 @@ sub printObject {
       next if($arg{temperature}&&(/^M104/||/^M109/)); # -- if temperature is set, override it (ignore settings in gcode)
       print "$_\n";
    }
+}
+
+sub printObjectSlice {
+   my($i,$n) = @_;
+
+   # -- here comes the magic: we output the code for layer $n, until the next layer index:
+   my $s = @{$i->{codeObjectZIndex}}[$n];
+   my $e = @{$i->{codeObjectZIndex}}[$n+1]-1;
+   my $ntot = $#{$i->{codeObjectZIndex}}+1;
+   
+   # -- I just love perl ... complex stuff done simple
+   
+   return unless($n>=0&&$n<$ntot);                          # -- at that slice level nothing of this object to do
+   
+   if(1||$n==0) {                                           # -- not yet sure of this ...
+      print "; layer-precode (not sure if it's needed)\n";
+      foreach my $j (0..(@{$i->{codeObjectZIndex}}[0]-1)) { # -- first few lines, after homing, temperature setting etc.
+         print ${$i->{codeObject}}[$j],"\n";                #    we might have to filter some stuff...
+      }                                                     #    right now each slice could have its own temperature!
+   }
+   $e = $#{$i->{codeObject}} if($n+1>=$ntot);    # -- last layer, we go for the trailing data (might require filtering)
+
+   print "; layer-code-start ",($n+1)," (of $ntot) of $i->{filename}\n";
+   print "; code index $s .. $e\n";
+   foreach my $j ($s..$e) {
+      print ${$i->{codeObject}}[$j],"\n";
+   }
+   print "; layer-code-end ",($n+1)," (of $ntot) of $i->{filename}\n";
 }
 
 sub sq {

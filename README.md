@@ -1,6 +1,6 @@
 <h1>GCodeToolbox<h1>
 
-<b>Version: 0.009 (ALPHA)</b>
+<b>Version: 0.010 (ALPHA)</b>
 
 GCodeToolbox (<tt>gctoolbox</tt>) is a command-line perl-script to manipulate .gcode files (for 3D printers & RepRaps) as created by slicers (like Slic3r or Skeinforge) from .stl files. 
 
@@ -12,15 +12,16 @@ The main aim of this package is to be able to
 
 <h2>History</h2>
 <ul>
+<li> 2013/02/12: 0.010: rudimentary sequence 'concurrent' implemented (each slice per object) and default behaviour, --sequence=complete old behaviour
 <li> 2013/02/11: 0.009: headX/Y/Z introduced, extruderDiameter abandoned 
 <li> 2013/02/11: 0.008: printerExtruderDiameter input, affects objectSpacing & slicer.skirt-distance (slic3r)
 <li> 2013/02/10: 0.007: conf and fileList support
 <li> 2013/02/09: 0.006: fanSpeed and temperature arguments possible, override gcode, proper filtering of object settings
 <li> 2013/02/09: 0.005: proper header and trailer if objects are concated
-<li> 2013/02/09: 0.004: proper movement at wrapping at concating (inserting G1 moves)
+<li> 2013/02/09: 0.004: proper movement at wrapping at concatenating (inserting G1 moves)
 <li> 2013/02/09: 0.003: optional left-to-right to right-to-left swinging
 <li> 2013/02/09: 0.002: passing slicer arguments via --slicer.[key]=[value]
-<li> 2013/02/08: 0.001: start, info and concat works
+<li> 2013/02/08: 0.001: start coding, first version, info and concat works
 </ul>
 
 <h2>Installation</h2>
@@ -145,17 +146,18 @@ defines the build-volume, margin of the built-platform toward the pieces, all va
 
 <img src="imgs/sequences.png">
 
-Right now "Complete Objects" is the default output of con<b>cat</b>enating multiple objects; most slicers have "Simultaneous Object" sequence as default.
-When printing multiple objects with different print temperatures (e.g. for doing a <a href="tests/array/">test plate as illustrated</a>) then "Complete Objects" is the way to go,
-otherwise "Simultaneous Objects" should work.
+There are two modes available (via --sequence=s) when con<b>cat</b>enating:
+<ul>
+<li><b>concurrent</b> (default): a layer of all objects are printed together; hardware settings like temperature cannot be changed (would slow down printing immensely).
+<li><b>complete</b>: each object is printed complete before moving the next object, it allows to print objects with different temperatures (e.g. profiling printing material like PLA or ABS) like
+these <a href="tests/array/">test plates (ABS & PLA)</a>, yet 
 
-As of version 0.009 only "Complete Objects" is supported by the <b>cat</b> command.
 
-At a later time mixed version might be considered e.g. rows with same temperature are printed "Simultaneous Objects" mode, compare the <a href="tests/array/">test plate example</a>.
+Since version 0.010 --sequence=concurrent is default, and --sequence=complete is available optionally (prior 0.010 --sequence=complete was default).
 
 <h3>Collision Awareness</h3>
 
-Right now <tt>gctoolbox</tt> concatenates pieces so they are printed individually complete first (later version may include an option to change this behaviour), which poses some danger that the extruder nozzle crashes into existing already printed items:
+When using --sequence=complete the objects are printed individually complete first, which poses some danger that the extruder nozzle crashes into existing already printed items:
 
 <img src="imgs/collision.png">
 
