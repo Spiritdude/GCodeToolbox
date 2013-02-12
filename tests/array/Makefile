@@ -1,7 +1,7 @@
 all:: PLAPlate200x200.gcode ABSPlate200x200.gcode render
 
 clean::
-	rm -f pla-*.gcode abs-*.gcode #Thumbs.db
+	rm -f pla-*.gcode abs-*.gcode Thumbs.db
 
 render:
 	../../gctoolbox render PLAPlate200x200.gcode ABSPlate200x200.gcode
