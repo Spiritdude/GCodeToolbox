@@ -1,3 +1,9 @@
+Just do
+   % make install
 
-% make install
+If you want 'render' to work (render .gcode to .png), install GD.pm like this:
+   % sudo apt-get install libgd-gd2-perl
+or 
+   % sudo cpan GD
+
 

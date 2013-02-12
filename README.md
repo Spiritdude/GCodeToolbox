@@ -26,11 +26,20 @@ The main aim of this package is to be able to
 </ul>
 
 <h2>Installation</h2>
+
 <pre>
 % make install
 </pre>
 
-which copies the <tt>gctoolbox</tt> to /usr/local/bin/ - that's all.
+If you want <b>render</b> command to work (.gcode to .png), install GD.pm too:
+<pre>
+% sudo apt-get install libgd-gd2-perl
+</pre>
+or
+<pre>
+% sudo cpan GD
+</pre>
+as well.
 
 <h2>Usage</h2>
 <pre>
