@@ -2,7 +2,7 @@
 
 <b>Version: 0.010 (ALPHA)</b>
 
-GCodeToolbox (<tt>gctoolbox</tt>) is a command-line perl-script to manipulate .gcode files (for 3D printers & RepRaps) as created by slicers (like Slic3r or Skeinforge) from .stl files. 
+GCodeToolbox (<tt>gctoolbox</tt>) is a command-line perl-script to manipulate .gcode files (for 3D printers & RepRaps) as created by slicers (like Slic3r) from .stl files. 
 
 The main aim of this package is to be able to 
 <ol>
