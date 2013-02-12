@@ -79,7 +79,7 @@ prints out some information about the actual gcode
 
 <pre>
 % gctoolbox slice cube10mm.stl
-% gctoolbox --slicer=slic3r --slicer.skirt_distance=2 slice cube10mm.stl
+% gctoolbox --slicer=slic3r --slicer.skirt-distance=2 slice cube10mm.stl
 </pre>
 creates cube10mm.gcode, default slicer is Slic3r, and arguments for the slicer can be given by --slicer.[arg]=[value].
 <pre>

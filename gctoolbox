@@ -26,7 +26,6 @@ $APPNAME = 'GCodeToolbox';
 
 use Math::Trig;
 use POSIX;
-use GD;
 
 my(%arg,%isFlag);
 
@@ -153,6 +152,8 @@ sub process {
          }
       }
    } elsif($cmd eq 'render') {
+      use GD;
+
       foreach my $f (@f) {
          my($fo) = $f; $fo =~ s/\.[^\.]+$/.png/;
          $fo = 'out.png' unless($fo);
