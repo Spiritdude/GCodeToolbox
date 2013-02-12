@@ -20,7 +20,7 @@ clean::
 # --- developers only below
 
 dist::	clean
-	cd ..; tar cfz Backup/gcodetoolbox-${VERSION}.tar.gz GCodeToolbox/
+	cd ..; tar cfz Backup/gcodetoolbox-${VERSION}.tar.gz "--exclude=*.git/*" GCodeToolbox/
 
 backup::	clean
 	scp ../Backup/gcodetoolbox-${VERSION}.tar.gz the-labs.com:Backup/
