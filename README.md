@@ -43,7 +43,7 @@ or
 
 <h2>Usage</h2>
 <pre>
-GCodeToolbox 0.011: gctoolbox [switches] [cmd] [file1]..[fileN]
+GCodeToolbox 0.012: gctoolbox [switches] [cmd] [file1]..[fileN]
 
 	info [file1]...    provide info on .gcode files
 	slice [file1]...   slice .stl files to .gcode
