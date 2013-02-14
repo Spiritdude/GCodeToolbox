@@ -4,10 +4,11 @@
 #
 # License: GPLv2
 #
-$VERSION = '0.011';
+$VERSION = '0.012';
 $APPNAME = 'GCodeToolbox';
 #
 # History:
+# 2013/02/14: 0.012: some bugfixes, and fine-tuning
 # 2013/02/12: 0.011: render cmd implemented, renders .gcode to .png
 # 2013/02/12: 0.010: rudimentary sequence 'concurrent' implemented (each slice per object) and default behaviour, --sequence=complete old behaviour
 # 2013/02/11: 0.009: headX/Y/Z introduced, extruderDiameter abandoned 
@@ -153,7 +154,8 @@ sub process {
       }
    } elsif($cmd eq 'render') {
       use GD;
-
+      use GD::Polygon;
+      
       foreach my $f (@f) {
          my($fo) = $f; $fo =~ s/\.[^\.]+$/.png/;
          $fo = 'out.png' unless($fo);
@@ -596,37 +598,68 @@ sub renderObject {
    }
    my $im = GD::Image->new($w,$h,1);
    my $bg = $im->colorAllocate(255,255,255);
+   my $bg2 = $im->colorAllocate(120,120,120);
    my $be = $im->colorAllocate(128,128,128);
    my $gr1 = $im->colorAllocate(140,140,140);
    my $gr2 = $im->colorAllocate(160,160,160);
    my $ex = $im->colorAllocate(0,255,0);
+   my $ex2 = $im->colorAllocate(0,220,0);
    my $mv = $im->colorAllocate(0,0,200);
    my $tx = $im->colorAllocate(255,255,255);
    my $dk = $im->colorAllocate(80,80,80);
    my(@post);
    
+   $ex2 = $ex unless($arg{'render.view'}eq'perspective');
    $im->filledRectangle(0,0,$w-1,$h-1,$bg);
    
    if($arg{'render.view'} eq 'top') {
       $im->filledRectangle($m,$m,$w-$m-1,$h-$m-1,$be);
-      my $c = $gr1;
       for(my $y=0; $y<$h-2*$m; $y+=1*$f) {
-         $im->line($m,$h-$m-$y,$w-$m-1,$h-$m-$y,$c);
+         $im->line($m,$h-$m-$y,$w-$m-1,$h-$m-$y,$gr1);
       }
       for(my $x=0; $x<$w-2*$m; $x+=1*$f) {
-         $im->line($m+$x,$m,$m+$x,$h-$m-1,$c);
+         $im->line($m+$x,$m,$m+$x,$h-$m-1,$gr1);
       }
-      $c = $gr2;
       for(my $y=0; $y<$h-2*$m; $y+=10*$f) {
-         $im->line($m,$h-$m-$y,$w-$m-1,$h-$m-$y,$c);
+         $im->line($m,$h-$m-$y,$w-$m-1,$h-$m-$y,$gr2);
       }
       for(my $x=0; $x<$w-2*$m; $x+=10*$f) {
-         $im->line($m+$x,$m,$m+$x,$h-$m-1,$c);
+         $im->line($m+$x,$m,$m+$x,$h-$m-1,$gr2);
       }
    } elsif($arg{'render.view'} eq 'front') {
-      $im->filledRectangle($m,$h-$m-1,$w-$m-1,$h-1,$c);
+      $im->filledRectangle($m,$m,$w-1-$m,$h-1-$m,$bg2);
+      $im->filledRectangle($m,$h-$m-1,$w-$m-1,$h-1,$be);
+      for(my $x=0; $x<$w-2*$m; $x+=1*$f) {
+         $im->line($m+$x,$m,$m+$x,$h-$m-1,$gr1);
+      }
+      for(my $y=0; $y<$h-2*$m; $y+=1*$f) {
+         $im->line($m,$h-$m-$y,$w-$m-1,$h-$m-$y,$gr1);
+      }
+      for(my $y=0; $y<$h-2*$m; $y+=10*$f) {
+         $im->line($m,$h-$m-$y,$w-$m-1,$h-$m-$y,$gr2);
+      }
+      for(my $x=0; $x<$w-2*$m; $x+=10*$f) {
+         $im->line($m+$x,$m,$m+$x,$h-$m-1,$gr2);
+      }
    } else {
-      ;
+      my $p = new GD::Polygon;
+      $p->addPt(_3dto2d($i,$px,$py,$pz,$w,$h,$m,0,0,0));
+      $p->addPt(_3dto2d($i,$px,$py,$pz,$w,$h,$m,$px,0,0));
+      $p->addPt(_3dto2d($i,$px,$py,$pz,$w,$h,$m,$px,$py,0));
+      $p->addPt(_3dto2d($i,$px,$py,$pz,$w,$h,$m,0,$py,0));
+      $im->filledRectangle(0,0,$w-1,$h-1,$bg2);
+      $im->filledPolygon($p,$be);
+      $im->setAntiAliased($gr2);
+      for(my $y=0; $y<=$py; $y+=10) {
+         $im->line(
+            _3dto2d($i,$px,$py,$pz,$w,$h,$m,0,$y,0),
+            _3dto2d($i,$px,$py,$pz,$w,$h,$m,$px,$y,0),gdAntiAliased);
+      }
+      for(my $x=0; $x<=$px; $x+=10) {
+         $im->line(
+            _3dto2d($i,$px,$py,$pz,$w,$h,$m,$x,0,0),
+            _3dto2d($i,$px,$py,$pz,$w,$h,$m,$x,$py,0),gdAntiAliased);
+      }
    }
    if(1) {
       my $n;
@@ -663,9 +696,9 @@ sub renderObject {
          }
       }
       if(%pos&&$d) {
-         my($x,$y) = _3dto2d($i,$px,$py,$pz,$w,$h,$pos{X},$pos{Y},$pos{Z});
-         $im->setAntiAliased($e?$ex:$mv);
-         # $im->setThickness($e?2:1);     # -- thickness 2 + antialias == ugly
+         my($x,$y) = _3dto2d($i,$px,$py,$pz,$w,$h,$m,$pos{X},$pos{Y},$pos{Z});
+         $im->setAntiAliased($e?($pos{X}>$lpos{X}?$ex:$ex2):$mv);
+         # $im->setThickness($e?2:1);     # -- thickness 2 + antialias == ugly with GD.pm
          if(defined $lx&&defined $ly&&($lx!=$x||$ly!=$y)) {
             if(0) {
                foreach (0..8) {
@@ -677,12 +710,13 @@ sub renderObject {
             }
             print STDERR "$pos{X},$pos{Y},$pos{Z} -> $x,$y ($lx,$ly) $e\n" if($verbose>1);
          }
-         if(defined $val{temp}&&$lval{temp}!=$val{temp}) {
-            push(@post,join("\t",$x+3,$y-3,"$val{temp}C"));
-            $lval{temp} = $val{temp};
-         }
          $lx = $x, $ly = $y;
          %lpos = %pos;
+      }
+      if(defined $val{temp}&&$lval{temp}!=$val{temp}) {  # -- we print temperature regardless of position already set
+         my($x,$y) = _3dto2d($i,$px,$py,$pz,$w,$h,$m,$pos{X},$pos{Y},$pos{Z});
+         push(@post,join("\t",$x+3,$y-12,"$val{temp}C"));
+         $lval{temp} = $val{temp};
       }
    }
    foreach(@post) {
@@ -699,18 +733,17 @@ sub renderObject {
 }
 
 sub _3dto2d {
-   my($i,$px,$py,$pz,$w,$h,$x,$y,$z) = @_;
+   my($i,$px,$py,$pz,$w,$h,$m,$x,$y,$z) = @_;
    my($xx,$yy);
-   my($m) = 10;
    if($arg{'render.view'} eq 'top') {
       $xx = $x/$px*($w-$m*2)+$m;
       $yy = $h-($y/$py*($h-$m*2)+$m);
    } elsif($arg{'render.view'} eq 'front') {
       $xx = $x/$px*($w-$m*2)+$m;
       $yy = $h-($z/$pz*($h-$m*2)+$m);
-   } else {
-      $xx = $x/$px*($w-$m*2)+$m+$y/$py*$w*.1;
-      $yy = $h-($z/$pz*($h-$m*2)+$m+$y/$py*$w*.3);
+   } else {       # -- perspective not yet done, sort z=far to z=near of rendering required (soon)
+      $xx = ($x/$px-0.5)*($w-$m*2)*sq(1-$y/$py*.1)+$w/2;
+      $yy = $h/5*4-($z/$pz*($h-$m*2)+$m+($y/$py*.5)*$w);
    }
    return($xx,$yy);
 }
