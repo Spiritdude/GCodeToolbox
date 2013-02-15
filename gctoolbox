@@ -4,10 +4,11 @@
 #
 # License: GPLv2
 #
-$VERSION = '0.012';
+$VERSION = '0.013';
 $APPNAME = 'GCodeToolbox';
 #
 # History:
+# 2013/02/15: 0.013: filamentLength & Volume corrected
 # 2013/02/14: 0.012: some bugfixes, and fine-tuning
 # 2013/02/12: 0.011: render cmd implemented, renders .gcode to .png
 # 2013/02/12: 0.010: rudimentary sequence 'concurrent' implemented (each slice per object) and default behaviour, --sequence=complete old behaviour
@@ -44,9 +45,7 @@ $arg{printerMargin} = 3;
 $arg{printerHeadX} = $arg{printerHeadY} = 16;    # J-Head Dimensions
 $arg{printerHeadZ} = 50;                         # J-Head Height
 
-$arg{'render.view'} = 'top';
-$arg{'render.width'} = 800;
-$arg{'render.height'} = 800;
+$arg{'renderView'} = 'top';
 
 confFile("$ENV{HOME}/.gctoolboxrc",silentFail=>1);
 
@@ -206,7 +205,7 @@ sub help {
       "\t--temperature=t    define extruder temperature (default none, defined in gcode)", 
       "\t--conf=file        configuration file, all command-line arguments (without '--'), one per line",
       "\t--fileList=file    file with list of files (one file per line)",
-      "\t--render.view=v    define render view (default: $arg{'render.view'}) { top, front }",
+      "\t--renderView=v    define render view (default: $arg{'renderView'}) { top, front }",
       ),"\n\n";
    exit 1;
 }
@@ -278,9 +277,9 @@ sub parseGCode {
          } elsif(/(G\d+)/) {
             my $c = $1;
             $g{"operations.$c.count"}++;
+            $h{Gn} = $c;
 
             $h{object} = 1 if($c eq 'G1');                        # -- if not already started object, now we do
-            #$h{object} = 1 if($c eq 'G92');
 
             $h{ignore} = 1, last if($c eq 'G28'&&$h{object}==0);  # -- first homing we ignore
             $h{object} = 2 if($c eq 'G28'&&$h{object}==1);        # -- consider homing after extruding the end of object
@@ -303,10 +302,12 @@ sub parseGCode {
             $g{$f.'Max'} = $v if(!defined $g{$f.'Max'}||$g{$f.'Max'}<$v);
             
          } elsif(/E([\-\d\.]+)/) {
-            my($v) = $1;
+            my($a,$v) = ('E',$1);
 
-            $g{filamentLength} += $v;
-            $g{filamentVolume} += ($v>0?1:-1)*sq($g{"commentInfo.filament_diameter"}/2)*pi*$v if($g{"commentInfo.filament_diameter"});
+            $h{$a.'Position'} = $v if($h{Gn}eq'G92');
+            $g{filamentLength} += ($v-$h{$a.'Position'});
+            $g{filamentVolume} += ($v>0?1:-1)*sq($g{"commentInfo.filament_diameter"}/2)*pi*($v-$h{$a.'Position'}) if($g{"commentInfo.filament_diameter"});
+            $h{$a.'Position'} = $v;
             
             if($v>0) {                       # -- actually printing out
                foreach my $a (qw(X Y Z)) {   # -- we calculate the actual size of the object as printed
@@ -589,9 +590,9 @@ sub renderObject {
    $py = $i->{"commentInfo.printerY"} if($i->{"commentInfo.printerY"});
    $pz = $i->{"commentInfo.printerZ"} if($i->{"commentInfo.printerZ"});
 
-   if($arg{'render.view'} eq 'top') {
+   if($arg{'renderView'} eq 'top') {
       ($w,$h) = ($px*$f+2*$m,$py*$f+2*$m);
-   } elsif($arg{'render.view'} eq 'front') {
+   } elsif($arg{'renderView'} eq 'front') {
       ($w,$h) = ($px*$f+2*$m,$pz*$f+2*$m);
    } else {
       ($w,$h) = ($px*$f+2*$m,$py*$f+2*$m);
@@ -609,10 +610,10 @@ sub renderObject {
    my $dk = $im->colorAllocate(80,80,80);
    my(@post);
    
-   $ex2 = $ex unless($arg{'render.view'}eq'perspective');
+   $ex2 = $ex unless($arg{'renderView'}eq'perspective');
    $im->filledRectangle(0,0,$w-1,$h-1,$bg);
    
-   if($arg{'render.view'} eq 'top') {
+   if($arg{'renderView'} eq 'top') {
       $im->filledRectangle($m,$m,$w-$m-1,$h-$m-1,$be);
       for(my $y=0; $y<$h-2*$m; $y+=1*$f) {
          $im->line($m,$h-$m-$y,$w-$m-1,$h-$m-$y,$gr1);
@@ -626,7 +627,7 @@ sub renderObject {
       for(my $x=0; $x<$w-2*$m; $x+=10*$f) {
          $im->line($m+$x,$m,$m+$x,$h-$m-1,$gr2);
       }
-   } elsif($arg{'render.view'} eq 'front') {
+   } elsif($arg{'renderView'} eq 'front') {
       $im->filledRectangle($m,$m,$w-1-$m,$h-1-$m,$bg2);
       $im->filledRectangle($m,$h-$m-1,$w-$m-1,$h-1,$be);
       for(my $x=0; $x<$w-2*$m; $x+=1*$f) {
@@ -735,10 +736,10 @@ sub renderObject {
 sub _3dto2d {
    my($i,$px,$py,$pz,$w,$h,$m,$x,$y,$z) = @_;
    my($xx,$yy);
-   if($arg{'render.view'} eq 'top') {
+   if($arg{'renderView'} eq 'top') {
       $xx = $x/$px*($w-$m*2)+$m;
       $yy = $h-($y/$py*($h-$m*2)+$m);
-   } elsif($arg{'render.view'} eq 'front') {
+   } elsif($arg{'renderView'} eq 'front') {
       $xx = $x/$px*($w-$m*2)+$m;
       $yy = $h-($z/$pz*($h-$m*2)+$m);
    } else {       # -- perspective not yet done, sort z=far to z=near of rendering required (soon)

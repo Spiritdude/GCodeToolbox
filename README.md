@@ -1,6 +1,6 @@
 <h1>GCodeToolbox<h1>
 
-<b>Version: 0.012 (ALPHA)</b>
+<b>Version: 0.013 (ALPHA)</b>
 
 GCodeToolbox (<tt>gctoolbox</tt>) is a command-line perl-script to manipulate .gcode files (for 3D printers & RepRaps) as created by slicers (like Slic3r) from .stl files. 
 
@@ -12,6 +12,7 @@ The main aim of this package is to be able to
 
 <h2>History</h2>
 <ul>
+<li> 2013/02/15: 0.013: filamentLength & Volume corrected
 <li> 2013/02/14: 0.012: some bugfixes, and fine-tuning
 <li> 2013/02/12: 0.011: render cmd implemented, renders .gcode to .png
 <li> 2013/02/12: 0.010: rudimentary sequence 'concurrent' implemented (each slice per object) and default behaviour, --sequence=complete old behaviour
@@ -43,7 +44,7 @@ or
 
 <h2>Usage</h2>
 <pre>
-GCodeToolbox 0.012: gctoolbox [switches] [cmd] [file1]..[fileN]
+GCodeToolbox 0.013: gctoolbox [switches] [cmd] [file1]..[fileN]
 
 	info [file1]...    provide info on .gcode files
 	slice [file1]...   slice .stl files to .gcode
@@ -70,7 +71,7 @@ GCodeToolbox 0.012: gctoolbox [switches] [cmd] [file1]..[fileN]
 	--temperature=t    define extruder temperature (default none, defined in gcode)
 	--conf=file        configuration file, all command-line arguments (without '--'), one per line
 	--fileList=file    file with list of files (one file per line)
-	--render.view=v    define render view (default: top) { top, front }
+	--renderView=v     define render view (default: top) { top, front }
 
 </pre>
 
