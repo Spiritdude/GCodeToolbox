@@ -199,7 +199,12 @@ and it will do some tests in tests/ and tests/array/; best explore the files.
 
 <h3>Visualization</h3>
 
-Best visit http://www.buildlog.net/gview/ and simply drag&drop your .gcode file to the browser-window, and it will preview the gcode.
+Best visit 
+<ul>
+<li>http://gcode.ws/
+<li>http://www.buildlog.net/gview/ or
+</ul>
+and simply drag&drop your .gcode file to the browser-window, and it will preview the gcode.
 
 That's all for now,
 

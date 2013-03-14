@@ -4,10 +4,11 @@
 #
 # License: GPLv2
 #
-$VERSION = '0.013';
+$VERSION = '0.014';
 $APPNAME = 'GCodeToolbox';
 #
 # History:
+# 2013/02/17: 0.014: 
 # 2013/02/15: 0.013: filamentLength & Volume corrected
 # 2013/02/14: 0.012: some bugfixes, and fine-tuning
 # 2013/02/12: 0.011: render cmd implemented, renders .gcode to .png
@@ -24,10 +25,12 @@ $APPNAME = 'GCodeToolbox';
 #
 # Todo/Ideas:
 # -print: send .gcode (and perhaps .scad, .stl) to the printer
-# -render: render .gcode (and perhaps .scad, .stl) to .png
+# -render (partially done): render .gcode (and perhaps .scad, .stl) to .png 
 
 use Math::Trig;
 use POSIX;
+use GD;
+use Device::SerialPort;
 
 my(%arg,%isFlag);
 
@@ -44,6 +47,12 @@ $arg{printerZ} = 200;
 $arg{printerMargin} = 3;
 $arg{printerHeadX} = $arg{printerHeadY} = 16;    # J-Head Dimensions
 $arg{printerHeadZ} = 50;                         # J-Head Height
+
+$arg{printerPort} = '/dev/ttyUSB0';
+$arg{printerDataBits} = 8;
+$arg{printerBaudRate} = 57600;
+$arg{printerParity} = 'none';
+$arg{printerStopBits} = 1;
 
 $arg{'renderView'} = 'top';
 
@@ -152,9 +161,8 @@ sub process {
          }
       }
    } elsif($cmd eq 'render') {
-      use GD;
-      use GD::Polygon;
-      
+      use if 1, 'GD';
+
       foreach my $f (@f) {
          my($fo) = $f; $fo =~ s/\.[^\.]+$/.png/;
          $fo = 'out.png' unless($fo);
@@ -164,6 +172,27 @@ sub process {
             renderObject($i,$fo);
          } else {
             print STDERR "ERROR: strange filename $f, cannot derive a png-filename from it\n";
+         }
+      }
+      
+   } elsif($cmd eq 'print') {
+      foreach (1..20) {
+         print STDERR "connecting $arg{printerPort} ...\n";
+         $port = Device::SerialPort->new($arg{printerPort});
+         last if($port);
+         $arg{printerPort} =~ s/\d+/$_/;
+      }
+      if(!$port) {
+         print STDERR "could not connect, printer connected and switched on?\n";
+      } else {
+         print STDERR "connected\n";
+         $port->databits($arg{printerDataBits});
+         $port->baudrate($arg{printerBaudRate});
+         $port->parity($arg{printerParity});
+         $port->stopbits($arg{printerStopBits});
+   
+         foreach my $f (@f) {
+            printFile($f);
          }
       }
       
@@ -574,6 +603,37 @@ sub sq {
    return $_[0]*$_[0];
 }
 
+sub printFile {
+   my($f) = @_;
+
+   if(open(F,$f)) {
+      while(<F>) {
+         # s/[\n\r]//g;      # -- get rid of \n and \r at the end
+         
+         print STDERR "N$ln $_\r"; $ln++;
+         
+         next if(/^\s*;/); s/;[\S ]*$//;      # -- skip ; comments, or remove tailing ones
+
+         $port->write($_);                    # -- we send it off
+
+         if($arg{printerWaitFeedback}) {
+            while(my $c=$port->lookfor()) {
+               $retrv .= $c;
+            }
+            if($retrv eq 'ok') {
+               next;
+            # } elsif() {   
+            } else {
+               ;  # -- something happened, what we do?
+            }
+         }
+      }
+      close(F);
+   } else {
+      print STDERR "file not found <$f>\n";
+   }
+}
+
 sub prettyDate {
    @_ = localtime($_[0]);
    return sprintf("%04d/%02d/%02d %02d:%02d:%02d %s",$_[5]+1900,$_[4]+1,$_[3],$_[2],$_[1],$_[0],strftime('%Z',@_));
@@ -747,4 +807,4 @@ sub _3dto2d {
       $yy = $h/5*4-($z/$pz*($h-$m*2)+$m+($y/$py*.5)*$w);
    }
    return($xx,$yy);
-}
+}                                  
