@@ -30,11 +30,11 @@ The main aim of this package is to be able to
 
 <h2>Installation</h2>
 
-Install two perl-modules first:
+Install 2 perl-modules first:
 <pre>
 % sudo apt-get install libgd-gd2-perl     # this way 
 % sudo cpan GD                            # or so ...
-% sudo cpan Device::SerialPort
+% sudo cpan Device::SerialPort            # not yet used, but required for future support of direct printing
 </pre>
 and then 
 <pre>
