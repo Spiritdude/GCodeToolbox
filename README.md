@@ -12,7 +12,7 @@ The main aim of this package is to be able to
 
 <h2>History</h2>
 <ul>
-<li> 2013/03/17: 0.014: implementing relative position
+<li> 2013/03/17: 0.014: implementing support for relative position
 <li> 2013/02/15: 0.013: filamentLength & Volume corrected
 <li> 2013/02/14: 0.012: some bugfixes, and fine-tuning
 <li> 2013/02/12: 0.011: render cmd implemented, renders .gcode to .png
