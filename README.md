@@ -30,17 +30,15 @@ The main aim of this package is to be able to
 
 <h2>Installation</h2>
 
+Install two perl-modules first:
+<pre>
+% sudo apt-get install libgd-gd2-perl     # this way 
+% sudo cpan GD                            # or so ...
+% sudo cpan Device::SerialPort
+</pre>
+and then 
 <pre>
 % make install
-</pre>
-
-If you want <b>render</b> command to work (.gcode to .png) too, install GD.pm too:
-<pre>
-% sudo apt-get install libgd-gd2-perl
-</pre>
-or
-<pre>
-% sudo cpan GD
 </pre>
 
 <h2>Usage</h2>
