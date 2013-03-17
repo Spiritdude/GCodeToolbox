@@ -8,7 +8,7 @@ $VERSION = '0.014';
 $APPNAME = 'GCodeToolbox';
 #
 # History:
-# 2013/02/17: 0.014: 
+# 2013/02/17: 0.014: implementing relative position
 # 2013/02/15: 0.013: filamentLength & Volume corrected
 # 2013/02/14: 0.012: some bugfixes, and fine-tuning
 # 2013/02/12: 0.011: render cmd implemented, renders .gcode to .png
@@ -227,7 +227,7 @@ sub help {
       "\t--printerHeadX=x   define head width (default: $arg{printerHeadX}) [mm]",
       "\t--printerHeadY=y   define head depth (default: $arg{printerHeadY}) [mm]",
       "\t--printerHeadZ=z   define head height (default: $arg{printerHeadZ}) [mm]",
-      "\t--cols=c           define columns when concat(enating) (default none, auto-overflow) [mm]",
+      "\t--cols=c           define columns when concat(enating) (default none, auto-overflow)",
       #"\t--swinging         enable swinging left-to-right to right-to-left when concat (default: $arg{swinging})",
       "\t--objectSpacing=x  define distance between items when concat (default: $arg{objectSpacing}) [mm]",
       "\t--fanSpeed=s       define fan-speed (s=0-255) (default none, defined in gcode)",
@@ -335,7 +335,6 @@ sub parseGCode {
 
             $h{$a.'Position'} = $v if($h{Gn}eq'G92');
             $g{filamentLength} += ($v-$h{$a.'Position'});
-            $g{filamentVolume} += ($v>0?1:-1)*sq($g{"commentInfo.filament_diameter"}/2)*pi*($v-$h{$a.'Position'}) if($g{"commentInfo.filament_diameter"});
             $h{$a.'Position'} = $v;
             
             if($v>0) {                       # -- actually printing out
@@ -383,6 +382,15 @@ sub parseGCode {
    $g{objectX} = $g{objectXMax} - $g{objectXMin};
    $g{objectY} = $g{objectYMax} - $g{objectYMin};
    $g{objectZ} = $g{objectZMax} - $g{objectZMin};
+   $g{filamentVolume} = sq($g{"commentInfo.filament_diameter"}/2)*pi*$g{filamentLength} if($g{"commentInfo.filament_diameter"});
+
+   # PLA: 1200-1400kg/m3 = 1.3 10^6g / 10^9 mm3 = 0.0013g/mm3 or 1.3 10^6g / 10^6 cm3 = 1.3g/cm3
+   # ABS: 1040-1060kg/m3 = 1.0 10^6g / 10^9 mm3 = 0.001g/mm3 or 1 10^6g / 10^6 cm3 = 1g/cm3
+   $g{filamentWeight} = $g{filamentVolume}*0.0012;
+   $g{'filamentWeight.unit'} = 'g';
+
+   $g{filamentVolume} /= 10*10*10;     # -- recalculate volume mm3 => cm3
+   $g{'filamentVolume.unit'} = 'cm3';
 
    return \%g;
 }
@@ -427,10 +435,10 @@ sub concatObjects {
       if(defined $arg{temperature});
 
    print join("\n",
-      "G90 ; use absolute coordinates",
+      "G90 ; use absolute coordinates",      # -- we convert all relative to absolute coordinates
       "G21 ; set units to millimeters",
       "G92 E0",
-      "M82 ; use absolute distances for extrusion",
+      # "M82 ; use absolute distances for extrusion",
       "; header-end"
       ),"\n";
       
@@ -541,19 +549,28 @@ sub concatObjects {
 sub reoriginObject {
    my($i,$x,$y,$z) = @_;
    my(@n);
+   my(%pos);
+   $pos{type} = 'abs';
    foreach(@{$i->{codeObject}}) {
       my(@d) = split(/\s+/);
       my(@dn);
       foreach(@d) {
          if(/([XYZ])([\d\.]+)/) {
             my($a,$v) = ($1,$2);
+            if($pos{type}eq'rel') {
+               $v = $pos{a}+$v;     # -- convert from relative to absolute
+            }
             my($fmin) = "object".$a."Min";
             my($fmax) = "object".$a."Max";
             if($x ne 'keep') { $v = $v-$i->{$fmin}, $v += $x if($a eq 'X'); }
             if($y ne 'keep') { $v = $v-$i->{$fmin}, $v += $y if($a eq 'Y'); }
             if($z ne 'keep') { $v = $v-$i->{$fmin}, $v += $z if($a eq 'Z'); }
+            $pos{$a} = $v;          # -- for converting relative to absolute
             push(@dn,$a.$v);
+
          } else {
+            $pos{type} = 'abs' if($_ eq 'G90');
+            $pos{type} = 'rel', $_ = 'G90' if($_ eq 'G91'); # --- force absolute coordinates
             push(@dn,$_);
          }
       }
@@ -738,6 +755,8 @@ sub renderObject {
          if(/G(\d+)/) {
             my($n) = $1;
             $d++ if($n==1);
+            $pos{type} = 'abs' if($n==90);
+            $pos{type} = 'rel' if($n==91);
             
          } elsif(/M(\d+)/) {
             my($n) = $1;
@@ -749,7 +768,11 @@ sub renderObject {
             
          } elsif(/([XYZ])([\-\d\.]+)/) {
             my($a,$v) = ($1,$2);
-            $pos{$a} = $v if($d);
+            if($pos{type}eq'abs') {
+               $pos{$a} = $v if($d);
+            } else {
+               $pos{$a} += $v if($d);
+            }
 
          } elsif(/E([\-\d\.]+)/) {
             my($v) = $1;
