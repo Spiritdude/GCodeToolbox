@@ -1,4 +1,4 @@
-<h1>GCodeToolbox<h1>
+<h1>GCodeToolbox</h1>
 
 <b>Version: 0.014 (ALPHA)</b>
 
